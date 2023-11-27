@@ -1,5 +1,5 @@
 import logo from './Images/Netflix.png';
-import './App.css';
+import './css/App.css';
 
 
 function App() {
