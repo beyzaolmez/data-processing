@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginPage from './LogInPage.js';
+import ProfilePage from './ProfilePage.js';
 
 
 function App() {
-  return (<LoginPage />);
-}
+  return (<ProfilePage />);
+} 
 
 export default App;

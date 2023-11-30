@@ -1,0 +1,43 @@
+.profile-selection-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profiles-container {
+    display: flex;
+  }
+  
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+  }
+  
+  .profile img {
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+    margin-bottom: 5px;
+  }
+  
+  .profile.add-new {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+  }
+  
+  .profile.add-new span:first-child {
+    font-size: 3rem;
+  }
+  
+  .manage-profiles {
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
