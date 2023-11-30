@@ -1,9 +1,9 @@
 import React from 'react';
 import logo from './../Images/Netflix.png';
-
 import './../css/RegisterPage.css'; // CSS file for styling
 
-export function RegisterPage() {
+const RegisterPage = () => {
+
   return (
     <div className="container">
     <img src={logo} className="logo" alt="logo" />
@@ -33,3 +33,5 @@ export function RegisterPage() {
     </div>
   );
 };
+
+export {RegisterPage};
