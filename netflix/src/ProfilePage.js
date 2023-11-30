@@ -1,7 +1,8 @@
 import logo from './Images/Netflix.png';
 import './css/App.css';
-function ProfilePage(){
-    
+
+export function ProfilePage(){
+    return(
     <div className="App">
     <header className="App-header">
       <img src={logo} className="App-logo" alt="logo" />
@@ -16,6 +17,5 @@ function ProfilePage(){
       </a>
     </header>
   </div>
+)
 }
-
-return ProfilePage()
