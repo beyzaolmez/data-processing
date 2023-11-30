@@ -1,0 +1,93 @@
+/* ... existing styles */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px; /* Adjust the width as needed */
+  height: auto;
+}
+
+
+.subscription-form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.headnote {
+  color: white;
+  text-align: center;
+}
+
+.subscription-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.option {
+  border: 2px solid red;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #330000;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.option label {
+  color: white;
+}
+
+.option.selected {
+  background-color: #990000;
+}
+
+.uhd {
+  width: 90%; /* Adjusting width for Ultra HD option */
+}
+
+/* Subscribe button style */
+.subscribe-btn {
+  width: 90%;
+  padding: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.subscribe-btn:hover {
+  background-color: #990000;
+}
+
+input[type='radio'] {
+  margin-right: 10px;
+}
+
+.invite-friend {
+  margin-top: 20px;
+  color: white;
+  text-align: center;
+}
+
+.discount-note {
+  display: block;
+  margin-top: 5px;
+}
