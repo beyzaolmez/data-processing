@@ -1,9 +1,11 @@
 import React from 'react';
-import LoginPage from './LogInPage.js';
+import AccountPage from './AccountPage.js';
 
 
 function App() {
-  return (<LoginPage />);
+  return (
+  <AccountPage />
+  );
 }
 
 export default App;
