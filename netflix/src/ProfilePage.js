@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './ProfilePage.css'; // Assuming your CSS file is named ProfilePage.css
+import React, { useState, useEffect } from 'react';
+import './css/ProfilePage.css';
 
 const Profile = ({ profilePic, name }) => (
   <div className="profile">
@@ -10,6 +10,19 @@ const Profile = ({ profilePic, name }) => (
 
 const ProfileSelectionScreen = () => {
   const [profiles, setProfiles] = useState([]);
+
+  useEffect(() => {
+    // Fetch profiles from your server
+    fetch('/api/profiles')
+      .then(response => response.json())
+      .then(data => {
+        if (data.createNew) {
+          // Handle the case when there are no profiles
+        } else {
+          setProfiles(data);
+        }
+      });
+  }, []);
 
   const addProfile = () => {
     // Placeholder for functionality to add a profile
@@ -36,21 +49,3 @@ const ProfileSelectionScreen = () => {
 };
 
 export default ProfileSelectionScreen;
-
-const express = require('express');
-const app = express();
-const port = 3000;
-
-// Mock data
-let profiles = [];
-
-app.get('/api/profiles', (req, res) => {
-  if (profiles.length === 0) {
-    return res.json({ createNew: true });
-  }
-  res.json(profiles);
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
