@@ -22,6 +22,7 @@ export default function LogIn() {
 
   return (
     <div id='mainGrid'>
+      <img src='Images/Netflix.png' alt="Netflix"/>
       <div className="loginContainer">
         <form className="loginForm" onSubmit={handleSubmit}>
           <label>Email address:</label>
@@ -46,7 +47,7 @@ export default function LogIn() {
           {/* <Link to="/register" className="registerLink">
             New user? <strong>Sign Up</strong>
           </Link> */}
-
+          <a id="FormLink" href="#">Forgot password?</a>
           <input
             type="submit"
             value="Log In"

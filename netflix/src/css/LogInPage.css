@@ -1,3 +1,48 @@
 *{
-    background-color: blue;
+    
+    color:white;
+}
+#mainGrid{
+    display:grid;
+	grid-template-columns:repeat(5,1fr);
+	grid-template-rows:repeat(8,1fr);
+	grid-auto-rows: 10rem;
+	align-items: center;
+	background-color: black;
+	height:auto;
+}
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    grid-column:3/4;
+    grid-row:3;
+    background-color: rgb(44, 42, 42);
+    width: 15rem;
+    height: 15rem;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    border-style:solid;
+    border-radius: 5px;
+}
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    background-color: rgb(44, 42, 42);
+    font-size: 25px;
+    
+
+}
+.loginButton{
+    margin: 10px;
+    color: black;
+}
+#FormLink{
+    font-size: 15px;
 }
