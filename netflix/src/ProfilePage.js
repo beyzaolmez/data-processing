@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './css/ProfilePage.css';
+import netflixImage from './Images/Netflix.png';
 
-const Profile = ({ profilePic, name }) => (
+const Profile = ({ name }) => (
   <div className="profile">
-    <img src={profilePic} alt={name} />
+    <img src={netflixImage} alt={name} />
     <span>{name}</span>
   </div>
 );
@@ -31,11 +32,11 @@ const ProfileSelectionScreen = () => {
 
   return (
     <div className="profile-selection-screen">
-      <h1>Who's watching?</h1>
+      <h1 className='profile-title'>Who's watching?</h1>
       <div className="profiles-container">
         {profiles.length === 0 && (
           <div className="profile add-new" onClick={addProfile}>
-            <span>+</span>
+            <span className='plus'>+</span>
             <span>Add profile</span>
           </div>
         )}
