@@ -61,3 +61,75 @@
     color: white;
   }
   
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .popup-inner {
+    background-color: black;
+    padding: 20px;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+  }
+
+  .profile-button{
+    margin-top: 30px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    color: #ccc;
+    background-color: black;
+    border: 1px solid #ccc;
+  }
+  
+.buttons{
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.profile-name{
+  color: white;
+}
+
+.profile-name{
+  width: 200px;
+  height: 50px;
+}
+
+.input-error {
+  color: red;
+  margin-top: 5px;
+}
+
+.profile-button-submit{
+  margin-top: 30px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  color: #ccc;
+  background-color: black;
+  border: 1px solid #ccc;
+  margin-right: 200px;
+}
+
+.profile-button-cancel{
+  margin-top: 30px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  color: #ccc;
+  background-color: black;
+  border: 1px solid #ccc;
+}
