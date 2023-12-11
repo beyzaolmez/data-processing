@@ -133,3 +133,18 @@
   background-color: black;
   border: 1px solid #ccc;
 }
+
+.radio-profile-kid{
+  color: white;
+  margin-left: 7px;
+  margin-right: 20px;
+}
+
+.radio-profile-adult{
+  color: white;
+  margin-top: 30px;
+}
+
+.input-checkbox{
+  margin-top: 30px;
+}

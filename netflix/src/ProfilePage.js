@@ -8,11 +8,16 @@ const ProfileSelectionScreen = () => {
   const [inputError, setInputError] = useState('');
   const [submitAttempted, setSubmitAttempted] = useState(false);
   useEffect(() => {}, []);
-
+ 
   const addProfile = () => {
     setShowPopup(true);
   };
+  const [profileType, setProfileType] = useState('');
 
+  const handleCheckboxChange = (event) => {
+    setProfileType(event.target.value);
+  };
+  
   const handleClosePopup = () => {
     setShowPopup(false);
   };
@@ -91,12 +96,33 @@ const ProfileSelectionScreen = () => {
     required
   />
   {submitAttempted && inputError && <div className="input-error">{inputError}</div>}
+  <p></p><label className="radio-profile-kid">
+    <input
+      className="input-checkbox"
+      type="radio"
+      value="Kid"
+      name="profileType"
+      checked={profileType === 'Kid'}
+      onChange={handleCheckboxChange}
+    />
+    Kid
+  </label>
+  <label className="radio-profile-adult">
+    <input 
+    className="input-checkbox"
+      type="radio"
+      value="Adult"
+      name="profileType"
+      checked={profileType === 'adult'}
+      onChange={handleCheckboxChange}
+    />
+    Adult
+  </label>
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
             </div>
             </form>
-            
           </div>
         </div>
       )}
