@@ -1,4 +1,4 @@
-# Setting up up
+# Setting up
 To run this application, you need to follow these steps:
 
 ### 1. Install Node.js:
