@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LogoImage from './Images/Netflix.png';
 import './css/LogInPage.css';
 
 export default function LogIn() {
@@ -22,20 +23,24 @@ export default function LogIn() {
 
   return (
     <div id='mainGrid'>
-      <img src='Images/Netflix.png' alt="Netflix"/>
+      <img src={LogoImage} alt="Netflix" id="logoImage"/>
       <div className="loginContainer">
         <form className="loginForm" onSubmit={handleSubmit}>
-          <label>Email address:</label>
+          <label for='userEmail'>Email address:</label>
           <input
             type="email"
+            id='userEmail'
+            name='userEmail'
             placeholder='Input Email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label>Password:</label>
+          <label for="">Password:</label>
           <input
             type="password"
+            id="userPassword"
+            name="userPassword"
             placeholder='Input Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -47,7 +52,7 @@ export default function LogIn() {
           {/* <Link to="/register" className="registerLink">
             New user? <strong>Sign Up</strong>
           </Link> */}
-          <a id="FormLink" href="#">Forgot password?</a>
+          <a id="FormLink" href="ForgotPasswordPage.js">Forgot password?</a>
           <input
             type="submit"
             value="Log In"
