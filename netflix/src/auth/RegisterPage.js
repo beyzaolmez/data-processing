@@ -2,12 +2,13 @@ import React from 'react';
 import logo from './../Images/Netflix.png';
 import './../css/RegisterPage.css'; // CSS file for styling
 
+
 const RegisterPage = () => {
 
   return (
     <div className="container">
     <img src={logo} className="logo" alt="logo" />
-      <div className="register-form">
+      <form className="register-form" onSubmit={RegisterPage}>
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input type="text" id="username" placeholder="Enter your username" />
@@ -29,7 +30,7 @@ const RegisterPage = () => {
           <input type="password" id="confirmPassword" placeholder="Confirm your password" />
         </div>
         <button className="register-btn">Register</button>
-      </div>
+      </form>
     </div>
   );
 };
