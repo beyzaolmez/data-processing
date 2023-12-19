@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import './css/ProfilePage.css';
 import netflixLogo from './Images/Netflix.png';
+import ProfileElephant from './profile-images/Profile-elephant.png';
+import ProfileFox from './profile-images/Profile-fox.png';
+import ProfileGiraffe from './profile-images/Profile-giraffe.png';
+import ProfileMonster from './profile-images/Profile-monster.png';
+import ProfilePenguin from './profile-images/Profile-pinguin.png';
+import ProfileTurtle from './profile-images/Profile-turtle.png';
 
 const ProfileSelectionScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -12,7 +18,16 @@ const ProfileSelectionScreen = () => {
   const [fadeError, setFadeError] = useState(false);
   const [showPicturePopup, setShowPicturePopup] = useState(false);
   const [selectedPicture, setSelectedPicture] = useState(null);
-
+  
+  const profileImages = [
+    ProfileElephant,
+    ProfileFox,
+    ProfileGiraffe,
+    ProfileMonster,
+    ProfilePenguin,
+    ProfileTurtle
+  ];
+  
   const addProfile = () => {
     setShowPopup(true);
   };
@@ -101,24 +116,50 @@ const ProfileSelectionScreen = () => {
     }
   };
 
-  const renderPicturePopup = () => {
-    return (
-      <div className="popup">
-        <div className="popup-inner">
-          <h2 className="profile-title">Choose a Picture</h2>
-          {/* Implement your picture selection logic here */}
-          <button className="avatar-close-button" onClick={() => setShowPicturePopup(false)}>Close</button>
-        </div>
-      </div>
-    );
-  };
-
   const handleChoosePictureClick = () => {
-    setShowPopup(false); // Close the profile creation popup
-    setShowPicturePopup(true); // Open the picture selection popup
-  };
-  
+      setShowPopup(false); 
+      setShowPicturePopup(true); 
+    };
 
+    const renderPicturePopup = () => {
+      const handleImageSelect = (image) => {
+        setSelectedPicture(image);
+        setShowPicturePopup(false);
+      };
+
+    <div className="profile-pictures">
+  {profileImages.map((image, index) => (
+    <img
+      key={index}
+      src={image}
+      alt={`Profile ${index}`}
+      className="profile-picture"
+      onDoubleClick={() => handleImageSelect(image)}
+    />
+  ))}
+</div>
+ 
+return (
+  <div className="popup">
+    <div className="popup-inner">
+      <h2 className="profile-title">Choose a Picture</h2>
+      <div className="profile-pictures">
+        {profileImages.map((image, index) => (
+          <img
+            key={index}
+            src={image} 
+            alt={`Profile ${index}`}
+            className="profile-picture"
+            onDoubleClick={() => handleImageSelect(image)}
+          />
+        ))}
+      </div>
+      <button className="avatar-close-button" onClick={() => setShowPicturePopup(false)}>Close</button>
+    </div>
+  </div>
+);
+};
+ 
   return (
     <div className="profile-selection-screen">
       <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
@@ -182,7 +223,7 @@ const ProfileSelectionScreen = () => {
   value="Choose a picture"
   className="picture-profile"
   onClick={handleChoosePictureClick}
-/>
+  />
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
