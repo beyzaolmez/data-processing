@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import './css/ProfilePage.css';
+import netflixLogo from './Images/Netflix.png';
 
 const ProfileSelectionScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [profileName, setProfileName] = useState('');
   const [profileType, setProfileType] = useState('');
-  const [inputError, setInputError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [typeError, setTypeError] = useState('');
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [fadeError, setFadeError] = useState(false);
+
 
   const addProfile = () => {
     setShowPopup(true);
@@ -15,15 +18,18 @@ const ProfileSelectionScreen = () => {
 
   const handleCheckboxChange = (event) => {
     setProfileType(event.target.value);
+    if (submitAttempted) {
+      validateProfileType();
+    }
   };
 
   const handleClosePopup = () => {
     setShowPopup(false);
     setProfileName('');
     setProfileType('');
-    setInputError('');
+    setNameError('');
+    setTypeError('');
     setSubmitAttempted(false);
-    setShowError(false);
   };
 
   const handleNameChange = (event) => {
@@ -34,25 +40,47 @@ const ProfileSelectionScreen = () => {
   };
 
   const validateInput = (value) => {
-    return /^[a-zA-Z0-9]*$/.test(value) && value.length >= 4 && value.length <= 16;
+    if (!/^[a-zA-Z0-9]*$/.test(value) || value.length < 4 || value.length > 16) {
+      setNameError('Please enter a valid name (4-16 characters long)');
+      return false;
+    } else {
+      setNameError('');
+      return true;
+    }
+  };
+
+  const validateProfileType = () => {
+    if (!profileType) {
+      setTypeError('Please choose a profile type');
+      return false;
+    } else {
+      setTypeError('');
+      return true;
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitAttempted(true);
 
-    setShowError(false);
-  
-    if (!validateInput(profileName)) {
-      setInputError('Please enter a valid name (4-16 characters long)');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000); 
-    } else if (!profileType) {
-      setInputError('Please choose a profile type');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000); 
-    } else {
-      setInputError('');}
+    const isNameValid = validateInput(profileName);
+    const isTypeValid = validateProfileType();
+
+    if (!isNameValid) {
+      setFadeError(true); // Start the fade-out effect
+      setTimeout(() => {
+        setNameError('');
+        setFadeError(false); // Reset the fade-out state
+      }, 3000); // Clear the error after 3 seconds (2s display + 1s fade)
+    }
+
+    if (!isTypeValid) {
+      setFadeError(true);
+      setTimeout(() => {
+        setTypeError('');
+        setFadeError(false);
+      }, 3000); 
+    }
 
     try {
       const response = await fetch('/api/addProfile', {
@@ -60,23 +88,22 @@ const ProfileSelectionScreen = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: profileName }),
+        body: JSON.stringify({ name: profileName, type: profileType }),
       });
-  
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      setShowPopup(false);
-      setProfileName('');
-      setProfileType('');
-      setSubmitAttempted(false);
+        throw new Error('Network response was not ok');
+      }
+      handleClosePopup(); // Use the function to reset state and close popup
     } catch (error) {
       console.error('Error submitting profile:', error);
     }
   };
+
   
   return (
     <div className="profile-selection-screen">
+      <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
       <h1 className='profile-title'>Who's watching?</h1>
       <div className="profiles-container" onClick={addProfile}>
         <div className="profile add-new" onClick={addProfile}>
@@ -91,17 +118,16 @@ const ProfileSelectionScreen = () => {
             <form onSubmit={handleSubmit}>
         <p><label className="profile-name" htmlFor="profileName">Name:</label></p>
         <input 
-  type="text" 
-  id="profileName" 
-  name="profileName"
-  value={profileName}
-  onChange={handleNameChange}
-  placeholder="Enter name here..."
-  required
-/>
-{submitAttempted && inputError && (
-  <div className={`input-error ${!showError ? 'input-error-fade' : ''}`}>
-    {inputError}
+              type="text" 
+              id="profileName" 
+              name="profileName"
+              value={profileName}
+              onChange={handleNameChange}
+              placeholder="Enter name here..."
+            />
+             {submitAttempted && nameError && (
+  <div className={`input-error ${fadeError ? 'input-error-fade' : ''}`}>
+    {nameError}
   </div>
 )}
   <p></p><label className="radio-profile-kid">
@@ -126,6 +152,11 @@ const ProfileSelectionScreen = () => {
   />
   Adult
 </label>
+{submitAttempted && typeError && (
+  <div className={`input-error ${fadeError ? 'input-error-fade' : ''}`}>
+    {typeError}
+  </div>
+)}
 <p></p>
 <input
     type="button"
