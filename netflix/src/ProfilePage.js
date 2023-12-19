@@ -9,7 +9,6 @@ const ProfileSelectionScreen = () => {
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [showError, setShowError] = useState(false);
 
-
   const addProfile = () => {
     setShowPopup(true);
   };
@@ -20,6 +19,11 @@ const ProfileSelectionScreen = () => {
 
   const handleClosePopup = () => {
     setShowPopup(false);
+    setProfileName('');
+    setProfileType('');
+    setInputError('');
+    setSubmitAttempted(false);
+    setShowError(false);
   };
 
   const handleNameChange = (event) => {
@@ -122,7 +126,12 @@ const ProfileSelectionScreen = () => {
   />
   Adult
 </label>
-
+<p></p>
+<input
+    type="button"
+    value="Choose a picture"
+    className="picture-profile"
+  />
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
