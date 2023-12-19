@@ -214,3 +214,16 @@
     transform: scale(1.1);
   }
 }
+
+.selected-picture-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.selected-picture {
+  max-width: 150px; 
+  max-height: 150px; 
+}

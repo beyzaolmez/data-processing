@@ -120,11 +120,12 @@ const ProfileSelectionScreen = () => {
       setShowPopup(false); 
       setShowPicturePopup(true); 
     };
-
+    
     const renderPicturePopup = () => {
       const handleImageSelect = (image) => {
         setSelectedPicture(image);
         setShowPicturePopup(false);
+        setShowPopup(true);
       };
 
     <div className="profile-pictures">
@@ -145,13 +146,13 @@ return (
       <h2 className="profile-title">Choose a Picture</h2>
       <div className="profile-pictures">
         {profileImages.map((image, index) => (
-          <img
-            key={index}
-            src={image} 
-            alt={`Profile ${index}`}
-            className="profile-picture"
-            onDoubleClick={() => handleImageSelect(image)}
-          />
+           <img
+           key={index}
+           src={image}
+           alt={`Profile ${index}`}
+           className="profile-picture"
+           onDoubleClick={() => handleImageSelect(image)}
+         />
         ))}
       </div>
       <button className="avatar-close-button" onClick={() => setShowPicturePopup(false)}>Close</button>
@@ -218,12 +219,19 @@ return (
   </div>
 )}
 <p></p>
-<input
-  type="button"
-  value="Choose a picture"
-  className="picture-profile"
-  onClick={handleChoosePictureClick}
-  />
+{selectedPicture && (
+            <div className="selected-picture-container">
+              <img src={selectedPicture} alt="Selected Profile" className="selected-picture" />
+            </div>
+          )}
+{!selectedPicture && (
+                <input
+                  type="button"
+                  value="Choose a picture"
+                  className="picture-profile"
+                  onClick={handleChoosePictureClick}
+                />
+              )}
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
