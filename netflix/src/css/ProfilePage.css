@@ -146,5 +146,19 @@
 }
 
 .input-checkbox{
-  margin-top: 30px;
+  margin-top: 20px;
+}
+
+#profileName{
+  height: 25px;
+  width: 200px;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.input-error-fade {
+  animation: fadeOut 1s forwards;
 }

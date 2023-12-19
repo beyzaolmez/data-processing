@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './css/ProfilePage.css';
 
 const ProfileSelectionScreen = () => {
-  const [profiles] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [profileName, setProfileName] = useState('');
+  const [profileType, setProfileType] = useState('');
   const [inputError, setInputError] = useState('');
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  useEffect(() => {}, []);
- 
+  const [showError, setShowError] = useState(false);
+
+
   const addProfile = () => {
     setShowPopup(true);
   };
-  const [profileType, setProfileType] = useState('');
 
   const handleCheckboxChange = (event) => {
     setProfileType(event.target.value);
   };
-  
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };
@@ -30,24 +30,26 @@ const ProfileSelectionScreen = () => {
   };
 
   const validateInput = (value) => {
-    if (/^[a-zA-Z0-9]*$/.test(value) && value.length >= 4) {
-      setInputError('');
-    } else {
-      setInputError('Please enter a valid name');
-    }
+    return /^[a-zA-Z0-9]*$/.test(value) && value.length >= 4 && value.length <= 16;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitAttempted(true);
+
+    setShowError(false);
   
-    const isValidInput = /^[a-zA-Z0-9]*$/.test(profileName) && profileName.length >= 4;
-    if (!isValidInput) {
-      setInputError('Please enter a valid name');
-      return;
-    }
-    setInputError('');
-  
+    if (!validateInput(profileName)) {
+      setInputError('Please enter a valid name (4-16 characters long)');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000); 
+    } else if (!profileType) {
+      setInputError('Please choose a profile type');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000); 
+    } else {
+      setInputError('');}
+
     try {
       const response = await fetch('/api/addProfile', {
         method: 'POST',
@@ -58,28 +60,25 @@ const ProfileSelectionScreen = () => {
       });
   
       if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
+        throw new Error('Network response was not ok');
+      }
       setShowPopup(false);
       setProfileName('');
+      setProfileType('');
       setSubmitAttempted(false);
-  
     } catch (error) {
       console.error('Error submitting profile:', error);
     }
   };
-    
+  
   return (
     <div className="profile-selection-screen">
       <h1 className='profile-title'>Who's watching?</h1>
       <div className="profiles-container" onClick={addProfile}>
-        {profiles.length === 0 && (
-          <div className="profile add-new" onClick={addProfile}>
-            <span className='plus'>+</span>
-            <span>Add profile</span>
-          </div>
-        )}
+        <div className="profile add-new" onClick={addProfile}>
+          <span className='plus'>+</span>
+          <span>Add profile</span>
+        </div>
       </div>
       {showPopup && (
         <div className="popup">
@@ -88,36 +87,42 @@ const ProfileSelectionScreen = () => {
             <form onSubmit={handleSubmit}>
         <p><label className="profile-name" htmlFor="profileName">Name:</label></p>
         <input 
-    type="text" 
-    id="profileName" 
-    name="profileName"
-    value={profileName}
-    onChange={handleNameChange}
-    required
-  />
-  {submitAttempted && inputError && <div className="input-error">{inputError}</div>}
+  type="text" 
+  id="profileName" 
+  name="profileName"
+  value={profileName}
+  onChange={handleNameChange}
+  placeholder="Enter name here..."
+  required
+/>
+{submitAttempted && inputError && (
+  <div className={`input-error ${!showError ? 'input-error-fade' : ''}`}>
+    {inputError}
+  </div>
+)}
   <p></p><label className="radio-profile-kid">
-    <input
-      className="input-checkbox"
-      type="radio"
-      value="Kid"
-      name="profileType"
-      checked={profileType === 'Kid'}
-      onChange={handleCheckboxChange}
-    />
-    Kid
-  </label>
-  <label className="radio-profile-adult">
-    <input 
+  <input
     className="input-checkbox"
-      type="radio"
-      value="Adult"
-      name="profileType"
-      checked={profileType === 'adult'}
-      onChange={handleCheckboxChange}
-    />
-    Adult
-  </label>
+    type="radio"
+    value="Kid"
+    name="profileType"
+    checked={profileType === 'Kid'}
+    onChange={handleCheckboxChange}
+  />
+  Kid
+</label>
+<label className="radio-profile-adult">
+  <input 
+    className="input-checkbox"
+    type="radio"
+    value="Adult"
+    name="profileType"
+    checked={profileType === 'Adult'}
+    onChange={handleCheckboxChange}
+  />
+  Adult
+</label>
+
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
