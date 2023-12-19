@@ -18,6 +18,8 @@ const ProfileSelectionScreen = () => {
   const [fadeError, setFadeError] = useState(false);
   const [showPicturePopup, setShowPicturePopup] = useState(false);
   const [selectedPicture, setSelectedPicture] = useState(null);
+  const [imageError, setImageError] = useState('');
+  const [showImageError, setShowImageError] = useState(false);
   
   const profileImages = [
     ProfileElephant,
@@ -46,6 +48,7 @@ const ProfileSelectionScreen = () => {
     setNameError('');
     setTypeError('');
     setSubmitAttempted(false);
+    setSelectedPicture(null);
   };
 
   const handleNameChange = (event) => {
@@ -75,12 +78,23 @@ const ProfileSelectionScreen = () => {
     }
   };
 
+  const validateimageProfile = () => {
+    if (!selectedPicture) {
+      setImageError('Choose an avatar picture');
+       return false;
+    } else {
+      setImageError('');
+      return true;
+    }// Fade out the error message
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitAttempted(true);
 
     const isNameValid = validateInput(profileName);
     const isTypeValid = validateProfileType();
+    const isImageValid = validateimageProfile();
 
     if (!isNameValid) {
       setFadeError(true);
@@ -96,6 +110,14 @@ const ProfileSelectionScreen = () => {
         setTypeError('');
         setFadeError(false);
       }, 3000); 
+    }
+
+    if (!isImageValid) {
+      setFadeError(true);
+      setTimeout(() => {
+        setImageError('');
+        setFadeError(false);
+      }, 3000);
     }
 
     try {
@@ -225,13 +247,20 @@ return (
             </div>
           )}
 {!selectedPicture && (
-                <input
-                  type="button"
-                  value="Choose a picture"
-                  className="picture-profile"
-                  onClick={handleChoosePictureClick}
-                />
-              )}
+  <input
+    type="button"
+    value="Choose a picture"
+    className="picture-profile"
+    onClick={handleChoosePictureClick}
+  />
+)}
+{submitAttempted && imageError && (
+  <div className={`input-error ${showImageError ? '' : 'input-error-fade'}`}>
+    {imageError}
+  </div>
+)}
+
+
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  
