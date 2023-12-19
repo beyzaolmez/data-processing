@@ -10,7 +10,8 @@ const ProfileSelectionScreen = () => {
   const [typeError, setTypeError] = useState('');
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [fadeError, setFadeError] = useState(false);
-
+  const [showPicturePopup, setShowPicturePopup] = useState(false);
+  const [selectedPicture, setSelectedPicture] = useState(null);
 
   const addProfile = () => {
     setShowPopup(true);
@@ -67,11 +68,11 @@ const ProfileSelectionScreen = () => {
     const isTypeValid = validateProfileType();
 
     if (!isNameValid) {
-      setFadeError(true); // Start the fade-out effect
+      setFadeError(true);
       setTimeout(() => {
         setNameError('');
-        setFadeError(false); // Reset the fade-out state
-      }, 3000); // Clear the error after 3 seconds (2s display + 1s fade)
+        setFadeError(false); 
+      }, 3000); 
     }
 
     if (!isTypeValid) {
@@ -94,13 +95,30 @@ const ProfileSelectionScreen = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      handleClosePopup(); // Use the function to reset state and close popup
+      handleClosePopup(); 
     } catch (error) {
       console.error('Error submitting profile:', error);
     }
   };
 
+  const renderPicturePopup = () => {
+    return (
+      <div className="popup">
+        <div className="popup-inner">
+          <h2 className="profile-title">Choose a Picture</h2>
+          {/* Implement your picture selection logic here */}
+          <button className="avatar-close-button" onClick={() => setShowPicturePopup(false)}>Close</button>
+        </div>
+      </div>
+    );
+  };
+
+  const handleChoosePictureClick = () => {
+    setShowPopup(false); // Close the profile creation popup
+    setShowPicturePopup(true); // Open the picture selection popup
+  };
   
+
   return (
     <div className="profile-selection-screen">
       <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
@@ -111,6 +129,7 @@ const ProfileSelectionScreen = () => {
           <span>Add profile</span>
         </div>
       </div>
+      {showPicturePopup && renderPicturePopup()}
       {showPopup && (
         <div className="popup">
           <div className="popup-inner">
@@ -159,10 +178,11 @@ const ProfileSelectionScreen = () => {
 )}
 <p></p>
 <input
-    type="button"
-    value="Choose a picture"
-    className="picture-profile"
-  />
+  type="button"
+  value="Choose a picture"
+  className="picture-profile"
+  onClick={handleChoosePictureClick}
+/>
         <p></p><div className="buttons">
           <input type="submit" value="Submit" className="profile-button-submit" />
             <button className="profile-button-cancel" onClick={handleClosePopup}>Cancel</button>  

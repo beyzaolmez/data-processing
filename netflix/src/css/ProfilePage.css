@@ -183,3 +183,14 @@
   height: 150px;
   margin-bottom: 100px;
 }
+
+.avatar-close-button{
+  margin-top: 20px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  color: #ccc;
+  background-color: black;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
