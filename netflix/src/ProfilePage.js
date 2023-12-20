@@ -20,6 +20,7 @@ const ProfileSelectionScreen = () => {
   const [selectedPicture, setSelectedPicture] = useState(null);
   const [imageError, setImageError] = useState('');
   const [showImageError, setShowImageError] = useState(false);
+  const [profileAdded, setProfileAdded] = useState(false);
   
   const profileImages = [
     ProfileElephant,
@@ -96,28 +97,15 @@ const ProfileSelectionScreen = () => {
     const isTypeValid = validateProfileType();
     const isImageValid = validateimageProfile();
 
-    if (!isNameValid) {
+    if (!isNameValid || !isTypeValid || !isImageValid) {
       setFadeError(true);
       setTimeout(() => {
         setNameError('');
-        setFadeError(false); 
-      }, 3000); 
-    }
-
-    if (!isTypeValid) {
-      setFadeError(true);
-      setTimeout(() => {
         setTypeError('');
-        setFadeError(false);
-      }, 3000); 
-    }
-
-    if (!isImageValid) {
-      setFadeError(true);
-      setTimeout(() => {
         setImageError('');
         setFadeError(false);
       }, 3000);
+      return;
     }
 
     try {
@@ -128,14 +116,17 @@ const ProfileSelectionScreen = () => {
         },
         body: JSON.stringify({ name: profileName, type: profileType }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
+      } else {
+        setProfileAdded(true);
+         // This line will close the popup
       }
-      handleClosePopup(); 
+      
     } catch (error) {
       console.error('Error submitting profile:', error);
-    }
+    }handleClosePopup();
   };
 
   const handleChoosePictureClick = () => {
@@ -187,12 +178,23 @@ return (
     <div className="profile-selection-screen">
       <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
       <h1 className='profile-title'>Who's watching?</h1>
-      <div className="profiles-container" onClick={addProfile}>
-        <div className="profile add-new" onClick={addProfile}>
-          <span className='plus'>+</span>
-          <span>Add profile</span>
+      {!profileAdded && (
+        <div className="profiles-container" onClick={addProfile}>
+          <div className="profile add-new" onClick={addProfile}>
+            <span className='plus'>+</span>
+            <span>Add profile</span>
+          </div>
         </div>
-      </div>
+      )}
+
+      {profileAdded && selectedPicture && (
+        <div className="profiles-container">
+          <div className="profile added-profile">
+            <img src={selectedPicture} alt="Profile" style={{ width: '150px', height: '150px' }} />
+            <span className="profile-name">{profileName}</span>
+          </div>
+        </div>
+      )}
       {showPicturePopup && renderPicturePopup()}
       {showPopup && (
         <div className="popup">
