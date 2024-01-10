@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import './css/ProfilePage.css';
 import netflixLogo from './Images/Netflix.png';
 import ProfileElephant from './profile-images/Profile-elephant.png';
@@ -21,6 +21,17 @@ const ProfileSelectionScreen = () => {
   const [imageError, setImageError] = useState('');
   const [showImageError, setShowImageError] = useState(false);
   const [profileAdded, setProfileAdded] = useState(false);
+  const [displayImage, setDisplayImage] = useState(null);
+  const [displayName, setDisplayName] = useState('');
+  const [isSubmissionSuccessful, setIsSubmissionSuccessful] = useState(false);
+
+  useEffect(() => {
+    if (isSubmissionSuccessful) {
+      // Actions to perform after successful submission
+      setDisplayImage(selectedPicture);
+      setDisplayName(profileName);
+    }
+  }, [isSubmissionSuccessful, selectedPicture, profileName]);
   
   const profileImages = [
     ProfileElephant,
@@ -33,7 +44,9 @@ const ProfileSelectionScreen = () => {
   
   const addProfile = () => {
     setShowPopup(true);
+    setIsSubmissionSuccessful(false);
   };
+  
 
   const handleCheckboxChange = (event) => {
     setProfileType(event.target.value);
@@ -92,11 +105,11 @@ const ProfileSelectionScreen = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitAttempted(true);
-
+  
     const isNameValid = validateInput(profileName);
     const isTypeValid = validateProfileType();
     const isImageValid = validateimageProfile();
-
+  
     if (!isNameValid || !isTypeValid || !isImageValid) {
       setFadeError(true);
       setTimeout(() => {
@@ -108,6 +121,8 @@ const ProfileSelectionScreen = () => {
       return;
     }
 
+    handleClosePopup();
+  
     try {
       const response = await fetch('/api/addProfile', {
         method: 'POST',
@@ -121,13 +136,14 @@ const ProfileSelectionScreen = () => {
         throw new Error('Network response was not ok');
       } else {
         setProfileAdded(true);
-         // This line will close the popup
+        setIsSubmissionSuccessful(true);
+        setDisplayImage(selectedPicture);
+        setDisplayName(profileName);
       }
-      
     } catch (error) {
       console.error('Error submitting profile:', error);
-    }handleClosePopup();
-  };
+    }
+  }; 
 
   const handleChoosePictureClick = () => {
       setShowPopup(false); 
@@ -176,25 +192,26 @@ return (
  
   return (
     <div className="profile-selection-screen">
-      <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
-      <h1 className='profile-title'>Who's watching?</h1>
-      {!profileAdded && (
-        <div className="profiles-container" onClick={addProfile}>
-          <div className="profile add-new" onClick={addProfile}>
-            <span className='plus'>+</span>
-            <span>Add profile</span>
-          </div>
-        </div>
-      )}
+    <img src={netflixLogo} alt="Netflix Logo" className="netflix-logo" />
+    <h1 className='profile-title'>Who's watching?</h1>
 
-      {profileAdded && selectedPicture && (
-        <div className="profiles-container">
-          <div className="profile added-profile">
-            <img src={selectedPicture} alt="Profile" style={{ width: '150px', height: '150px' }} />
-            <span className="profile-name">{profileName}</span>
-          </div>
+    {!profileAdded && (
+      <div className="profiles-container" onClick={addProfile}>
+        <div className="profile add-new" onClick={addProfile}>
+          <span className='plus'>+</span>
+          <span>Add profile</span>
         </div>
-      )}
+      </div>
+    )}
+
+{isSubmissionSuccessful && selectedPicture && (
+      <div className="profiles-container">
+        <div className="profile added-profile">
+          <img src={selectedPicture} alt="Profile" style={{ width: '150px', height: '150px' }} />
+          <span className="profile-name">{profileName}</span>
+        </div>
+      </div>
+    )}
       {showPicturePopup && renderPicturePopup()}
       {showPopup && (
         <div className="popup">
