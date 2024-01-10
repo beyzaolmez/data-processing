@@ -1,3 +1,4 @@
+import './css/AdminPanel.css';
 // server.js
 const express = require('express');
 const mysql = require('mysql');

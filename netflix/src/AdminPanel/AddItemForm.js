@@ -1,6 +1,6 @@
-// AddItemForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../css/AdminPanel.css';
 
 const AddItemForm = () => {
     const [itemName, setItemName] = useState('');
@@ -16,15 +16,17 @@ const AddItemForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text" 
-                value={itemName} 
-                onChange={(e) => setItemName(e.target.value)} 
-                placeholder="Enter item name" 
-            />
-            <button type="submit">Add Item</button>
-        </form>
+        <div className="admin-container">
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text" 
+                    value={itemName} 
+                    onChange={(e) => setItemName(e.target.value)} 
+                    placeholder="Enter item name" 
+                />
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
     );
 };
 

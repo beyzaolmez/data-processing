@@ -1,6 +1,6 @@
-// ItemList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../css/AdminPanel.css';
 
 const ItemList = () => {
     const [items, setItems] = useState([]);
@@ -12,7 +12,7 @@ const ItemList = () => {
     }, []);
 
     return (
-        <div>
+        <div className="admin-container">
             {items.map(item => (
                 <div key={item.id}>
                     {item.name} {}
