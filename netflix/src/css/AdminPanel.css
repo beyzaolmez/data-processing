@@ -10,14 +10,14 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 500px;
+    height: 970px;
 }
 
 button, input, select, textarea {
-    margin: 10px;
+    margin: 20px;
     padding: 10px;
     font-size: 1.2em;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 button {
@@ -34,7 +34,7 @@ button:hover {
 
 .upload-button {
     display: block;
-    margin: 10px auto;
+    margin: 20px auto;
     padding: 10px;
     font-size: 1.2em;
     cursor: pointer;
