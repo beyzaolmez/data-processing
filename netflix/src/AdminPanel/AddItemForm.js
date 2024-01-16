@@ -23,9 +23,9 @@ const AddItemForm = () => {
                     type="text" 
                     value={itemName} 
                     onChange={(e) => setItemName(e.target.value)} 
-                    placeholder="Enter item name" 
+                    placeholder="Enter movie/series name" 
                 />
-                <button type="submit">Add Item</button>
+                <button type="submit">Add Name</button>
             </form>
         </div>
     );

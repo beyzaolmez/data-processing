@@ -7,13 +7,14 @@ const DeleteButton = ({ itemId }) => {
         axios.delete(`http://localhost:5000/items/${itemId}`)
             .then(response => {
                 console.log(response.data);
+                window.location.reload(); 
             })
             .catch(error => console.error(error));
     };
 
     return (
         <div className="admin-container">
-            <button onClick={handleDelete}>Delete</button>
+            <button onClick={handleDelete}>Go back</button>
         </div>
     );
 };

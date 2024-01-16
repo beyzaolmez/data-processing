@@ -55,7 +55,7 @@ const isSubmitEnabled = (videoFile || series.length > 0) && isAnyGenreSelected;
 
 return (
   <div className="admin-container">
-      <AddItemForm />
+      <AddItemForm/>
       <ItemList />
       <form onSubmit={handleSubmit}>
                 {}
