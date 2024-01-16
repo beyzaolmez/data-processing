@@ -16,7 +16,7 @@ const ItemList = () => {
             {items.map(item => (
                 <div key={item.id}>
                     {item.name}
-                    {/* DeleteButton Component here */}
+                    {}
                 </div>
             ))}
         </div>

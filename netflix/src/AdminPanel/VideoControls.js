@@ -1,4 +1,3 @@
-// VideoControls.js
 import React, { useState, useRef } from 'react';
 
 const VideoControls = ({ videoSrc }) => {
@@ -8,7 +7,7 @@ const VideoControls = ({ videoSrc }) => {
     const handlePause = () => {
         const video = videoRef.current;
         video.pause();
-        setCurrentTime(video.currentTime); // Save the current time
+        setCurrentTime(video.currentTime);
     };
 
     const handleReplay = () => {
