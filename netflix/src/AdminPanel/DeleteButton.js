@@ -5,11 +5,9 @@ import '../css/AdminPanel.css';
 const DeleteButton = ({ itemId }) => {
     const handleDelete = () => {
         axios.delete(`http://localhost:5000/items/${itemId}`)
-            .then(response => {
-                console.log(response.data);
-                window.location.reload(); 
-            })
-            .catch(error => console.error(error));
+            .then(response => console.log(response.data))
+            .catch(error => console.error(error))
+            .finally(() => window.location.reload());
     };
 
     return (
