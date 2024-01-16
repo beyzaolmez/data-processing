@@ -18,7 +18,8 @@ const AddItemForm = () => {
     return (
         <div className="admin-container">
             <form onSubmit={handleSubmit}>
-                <input 
+                <input
+                    className='TextInput' 
                     type="text" 
                     value={itemName} 
                     onChange={(e) => setItemName(e.target.value)} 

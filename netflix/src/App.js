@@ -20,6 +20,10 @@ function App() {
       setSeries([...series, { episode: series.length + 1, url: videoUrl }]);
   };
 
+  const handleDelete = () => {
+    window.location.reload();
+};
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -28,10 +32,13 @@ function App() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ videoFile, series })
         });
-        window.location.reload();
+        setVideoFile(null);
+        setSeries([]);
+        
     } catch (error) {
         console.error('Submission error:', error);
     }
+    window.location.reload();
 };
 
 
@@ -58,7 +65,7 @@ return (
               disabled={!videoFile && series.length === 0}
           />
       </form>
-      <DeleteButton/>
+      <DeleteButton onClick={handleDelete} />
   </div>
 );
 }
