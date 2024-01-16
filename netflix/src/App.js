@@ -20,25 +20,47 @@ function App() {
       setSeries([...series, { episode: series.length + 1, url: videoUrl }]);
   };
 
-    return (
-      <div className="admin-container">
-          <AddItemForm />
-          {}
-          {/* Video Upload */}
-          <input type="file" accept="video/*" onChange={handleVideoUpload} style={{ display: 'none' }} id="video-upload" />
-            <label htmlFor="video-upload" className="upload-button">Upload Video</label>
-            {videoFile && <VideoControls videoSrc={videoFile} />}
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        await fetch('http://your-backend-url/api/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ videoFile, series })
+        });
+        window.location.reload();
+    } catch (error) {
+        console.error('Submission error:', error);
+    }
+};
 
-            {/* Series Upload */}
-            <input type="file" accept="video/*" onChange={handleSeriesUpload} style={{ display: 'none' }} id="series-upload" multiple />
-            <label htmlFor="series-upload" className="upload-button">Upload Series</label>
-            {series.map((item, index) => (
-                <div key={index}>Episode {item.episode}: <VideoControls videoSrc={item.url} /></div>
-            ))}
-          <ItemList />
-          <DeleteButton />
-      </div>
-  );
+
+return (
+  <div className="admin-container">
+      <AddItemForm />
+      <ItemList />
+      <form onSubmit={handleSubmit}>
+          {}
+          <input type="file" accept="video/*" onChange={handleVideoUpload} style={{ display: 'none' }} id="video-upload" />
+          <label htmlFor="video-upload" className="upload-button">Upload Video</label>
+          {videoFile && <VideoControls videoSrc={videoFile} />}
+
+          {}
+          <input type="file" accept="video/*" onChange={handleSeriesUpload} style={{ display: 'none' }} id="series-upload" multiple />
+          <label htmlFor="series-upload" className="upload-button">Upload Series</label>
+          {}
+
+          {}
+          <input 
+              type="submit" 
+              value="Submit" 
+              className="submit-button"
+              disabled={!videoFile && series.length === 0}
+          />
+      </form>
+      <DeleteButton/>
+  </div>
+);
 }
 
 export default App;

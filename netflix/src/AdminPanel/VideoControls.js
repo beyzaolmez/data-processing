@@ -18,7 +18,12 @@ const VideoControls = ({ videoSrc }) => {
 
     return (
         <div>
-            <video ref={videoRef} src={videoSrc} controls></video>
+            <video 
+                ref={videoRef} 
+                src={videoSrc} 
+                controls 
+                style={{ height: '200px', width: '400px' }}
+            ></video>
             <button onClick={handlePause}>Pause</button>
             <button onClick={handleReplay}>Replay</button>
             <p>Paused at: {currentTime} seconds</p>
