@@ -15,7 +15,7 @@ const ItemList = () => {
         <div className="admin-container">
             {items.map(item => (
                 <div key={item.id}>
-                    {item.name} {}
+                    {item.name}
                     {/* DeleteButton Component here */}
                 </div>
             ))}

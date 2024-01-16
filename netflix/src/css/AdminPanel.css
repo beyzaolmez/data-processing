@@ -30,3 +30,21 @@ button {
 button:hover {
     background-color: #555;
 }
+
+.video-upload-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #444; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.video-upload-button:hover {
+    background-color: #555; 
+}
+
