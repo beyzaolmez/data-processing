@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LogoImage from './Images/Netflix.png';
 import './css/LogInPage.css';
 
-export default function LogIn() {
+const MAX_LOGIN_ATTEMPTS = 3;
+
+const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+
+  useEffect(() => {
+    const storedLoginAttempts = localStorage.getItem('loginAttempts');
+    if (storedLoginAttempts) {
+      setLoginAttempts(parseInt(storedLoginAttempts, 10));
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +34,19 @@ export default function LogIn() {
 
       if (response.ok) {
         setIsLoggedIn(true);
+        setLoginAttempts(0); // Reset login attempts on successful login
+        localStorage.removeItem('loginAttempts'); // Clear stored attempts
+        document.cookie = `loggedIn=true; max-age=3600`; // Set a cookie for 1 hour (adjust as needed)
         console.log('Login successful:', data.user);
       } else {
         setError(data.message || 'Login failed');
+        setLoginAttempts(loginAttempts + 1);
+
+        if (loginAttempts + 1 === MAX_LOGIN_ATTEMPTS) {
+          // Block account after the maximum allowed attempts
+          console.log('Account blocked!');
+          // You may want to implement further actions like notifying the user or locking the account in the database
+        }
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -79,4 +99,6 @@ export default function LogIn() {
       </div>
     </div>
   );
-}
+};
+
+export default LogIn;
