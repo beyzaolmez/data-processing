@@ -3,6 +3,7 @@ import ItemList from './AdminPanel/ItemList';
 //import AddItemForm from './AdminPanel/AddItemForm';
 import DeleteButton from './AdminPanel/DeleteButton';
 import VideoControls from './AdminPanel/VideoControls';
+import AdminForm from './AdminPanel/AdminForm';
 
 function App() {
     const [videoFile, setVideoFile] = useState(null);
@@ -12,6 +13,9 @@ function App() {
     const [seriesTitle, setSeriesTitle] = useState('');
     const [movieDescription, setMovieDescription] = useState('');
     const [seriesDescription, setSeriesDescription] = useState('');
+    const [showAdminForm, setShowAdminForm] = useState(false);
+    const [adminName, setAdminName] = useState('');
+    const [adminEmail, setAdminEmail] = useState('');
 
     const handleVideoUpload = (event) => {
         const file = event.target.files[0];
@@ -37,13 +41,18 @@ function App() {
     setGenres({ ...genres, [event.target.name]: event.target.checked });
 };
 
-const isAnyGenreSelected = Object.values(genres).some(Boolean);
+  const isAnyGenreSelected = Object.values(genres).some(Boolean);
     const isSubmitEnabled = (videoFile || series.length > 0) && isAnyGenreSelected && 
                             ((videoFile && movieTitle && movieDescription) || 
                              (series.length > 0 && seriesTitle && seriesDescription));
   const handleDelete = () => {
     window.location.reload();
 };
+
+const toggleAdminFormVisibility = () => {
+  setShowAdminForm(!showAdminForm);
+};
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,6 +69,11 @@ const isAnyGenreSelected = Object.values(genres).some(Boolean);
         console.error('Submission error:', error);
     }
     window.location.reload();
+};
+
+const handleAdminSubmit = async () => {
+  setShowAdminForm(false);
+  window.location.reload();
 };
 
 return (
@@ -142,6 +156,15 @@ return (
           />
       </form>
       <DeleteButton onClick={handleDelete} />
+      <div className="admin-container">
+            {!showAdminForm && (
+                <button onClick={toggleAdminFormVisibility}>Create a New Admin</button>
+            )}
+            {showAdminForm && (
+                <AdminForm onSubmit={handleAdminSubmit} />
+            )}
+            {}
+        </div>
   </div>
 );
 }

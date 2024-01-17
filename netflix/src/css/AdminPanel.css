@@ -80,3 +80,19 @@ button:hover {
     cursor: pointer;
 }
 
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.admin-form label {
+    text-align: left;
+}
+
+.admin-form input,
+.admin-form textarea {
+    margin-bottom: 10px;
+}
+
+
