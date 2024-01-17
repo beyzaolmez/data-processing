@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Abel;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    border-bottom: solid black;
+    width: 60%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+}
+
+#cancel {
+    color: white;
+    border-radius: 0.3125rem;
+    background: #525252;
+    padding: 1rem;
+    text-align: center;
+}
+
+#cancel:hover {
+    background: #141414;
+}
+
+#member {
+    display: flex;
+    align-items: center;
+}
+
+#member img {
+    width: 30px;
+    padding-right: 1rem;
+}
+
+#membership-and-billing, #planning {
+    min-width: 70%;
+}
+
+#membership {
+    border-bottom: solid #A5A2A2;
+}
+
+#email, #password, #billing-info, #planning {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

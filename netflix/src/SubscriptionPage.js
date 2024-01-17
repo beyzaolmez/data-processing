@@ -10,10 +10,38 @@ const [selectedOption, setSelectedOption] = useState(null);
     setSelectedOption(option);
   };
 
+  const handleSubmit = async (event) => {
+  event.preventDefault();
+  
+  const formData = new FormData(event.target);
+  const subscriptionType = formData.get('subscriptionType');
+
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ subscriptionType }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to add subscription');
+    }
+
+    // Subscription added successfully
+    // Handle success scenario here (e.g., show a success message)
+  } catch (error) {
+    console.error('Error:', error.message);
+    // Handle error scenario here (e.g., show an error message)
+  }
+};
+
+
   return (
     <div className="container">
       <img src={LogoImage} alt="Logo" className="logo" />
-      <div className="subscription-form">
+      <form className="subscription-form" onSubmit={handleSubmit}>
         <p className="headnote">
           You will get a 7-day free trial before the website starts charging.
         </p>
@@ -42,7 +70,7 @@ const [selectedOption, setSelectedOption] = useState(null);
           <a href="/">Invite a friend?</a> {/* Link to invite friend page */}
           <span className="discount-note">If your friend joins, you both get a €2 discount!</span>
         </p>
-      </div>
+      </form>
     </div>
   );
 };
