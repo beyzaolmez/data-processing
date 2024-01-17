@@ -11,7 +11,7 @@ const goToRegisterPage = (req, res, next) => {
 const getUsers = (req, res, next) => {
     let sql = 'SELECT * FROM user';
     database.query(sql, (err, result) => {
-        res.send(result);
+        res.json(result);
     });
 };
 
