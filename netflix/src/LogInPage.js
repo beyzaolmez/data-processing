@@ -8,18 +8,29 @@ export default function LogIn() {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Add your authentication logic here
-    // For simplicity, I'm just checking if both email and password are not empty
-    if (email && password) {
-      // Perform authentication or API request here
-      // If successful, you can navigate to the main content page
-      // For demonstration purposes, I'm just setting isLoggedIn to true
-      setIsLoggedIn(true);
-    } else {
-      setError('Please enter both email and password');
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+        console.log('Login successful:', data.user);
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setError('Internal Server Error');
     }
   };
 
