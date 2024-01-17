@@ -28,7 +28,11 @@ function App() {
   
       setSeries(series.concat(newSeries));
   };
-   
+  
+  const handleBack = () => {
+    window.location.reload();
+};
+
   const handleGenreChange = (event) => {
     setGenres({ ...genres, [event.target.name]: event.target.checked });
 };
@@ -60,6 +64,7 @@ const isAnyGenreSelected = Object.values(genres).some(Boolean);
 
 return (
   <div className="admin-container">
+       <button className="back-button" onClick={handleBack}>Home</button>
       <ItemList />
       <form onSubmit={handleSubmit}>
                 {}
