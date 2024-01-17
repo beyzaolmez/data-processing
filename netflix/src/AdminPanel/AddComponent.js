@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import ItemList from './ItemList';
 import AddItemForm from './AddItemForm';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ItemList from './AdminPanel/ItemList';
-import AddItemForm from './AdminPanel/AddItemForm';
+//import AddItemForm from './AdminPanel/AddItemForm';
 import DeleteButton from './AdminPanel/DeleteButton';
 import VideoControls from './AdminPanel/VideoControls';
 
@@ -8,6 +8,10 @@ function App() {
     const [videoFile, setVideoFile] = useState(null);
     const [series, setSeries] = useState([]);
     const [genres, setGenres] = useState({ action: false, comedy: false, drama: false });
+    const [movieTitle, setMovieTitle] = useState('');
+    const [seriesTitle, setSeriesTitle] = useState('');
+    const [movieDescription, setMovieDescription] = useState('');
+    const [seriesDescription, setSeriesDescription] = useState('');
 
     const handleVideoUpload = (event) => {
         const file = event.target.files[0];
@@ -30,8 +34,9 @@ function App() {
 };
 
 const isAnyGenreSelected = Object.values(genres).some(Boolean);
-const isSubmitEnabled = (videoFile || series.length > 0) && isAnyGenreSelected;
-  
+    const isSubmitEnabled = (videoFile || series.length > 0) && isAnyGenreSelected && 
+                            ((videoFile && movieTitle && movieDescription) || 
+                             (series.length > 0 && seriesTitle && seriesDescription));
   const handleDelete = () => {
     window.location.reload();
 };
@@ -55,7 +60,6 @@ const isSubmitEnabled = (videoFile || series.length > 0) && isAnyGenreSelected;
 
 return (
   <div className="admin-container">
-      <AddItemForm/>
       <ItemList />
       <form onSubmit={handleSubmit}>
                 {}
@@ -79,7 +83,10 @@ return (
                 {series.map((video, index) => (
                     <VideoControls key={index} videoSrc={video.url} />
                 ))}
-                 <h3>Choose genres:</h3>
+
+                {videoFile && (
+                    <>
+                        <h3>Choose genres:</h3>
                 <div>
                     <input type="checkbox" id="action" name="action" checked={genres.action} onChange={handleGenreChange} />
                     <label htmlFor="action">Action</label>
@@ -91,7 +98,36 @@ return (
                 <div>
                     <input type="checkbox" id="drama" name="drama" checked={genres.drama} onChange={handleGenreChange} />
                     <label htmlFor="drama">Drama</label>
+                </div><p></p>
+                        <label>Enter title:</label><p></p>
+                        <input type="text" placeholder="Movie Title" value={movieTitle} onChange={(e) => setMovieTitle(e.target.value)} /><p></p>
+                        <label>Enter description:</label><p></p>
+                        <textarea placeholder="Movie Description" value={movieDescription} onChange={(e) => setMovieDescription(e.target.value)}></textarea>
+                    </>
+                )}
+
+                {series.length > 0 && (
+                    <>  
+                        <h3>Choose genres:</h3>
+                <div>
+                    <input type="checkbox" id="action" name="action" checked={genres.action} onChange={handleGenreChange} />
+                    <label htmlFor="action">Action</label>
                 </div>
+                <div>
+                    <input type="checkbox" id="comedy" name="comedy" checked={genres.comedy} onChange={handleGenreChange} />
+                    <label htmlFor="comedy">Comedy</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="drama" name="drama" checked={genres.drama} onChange={handleGenreChange} />
+                    <label htmlFor="drama">Drama</label>
+                </div><p></p>
+                        <label>Enter title:</label><p></p>
+                        <input type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} /><p></p>
+                        <label>Enter description:</label><p></p>
+                        <textarea placeholder="Series Description" value={seriesDescription} onChange={(e) => setSeriesDescription(e.target.value)}></textarea>
+                    </>
+                )}
+
 
           <input 
               type="submit" 
