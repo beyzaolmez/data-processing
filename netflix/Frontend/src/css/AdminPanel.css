@@ -1,0 +1,98 @@
+
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+}
+
+button, input, select, textarea {
+    margin: 20px;
+    padding: 10px;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+button {
+    cursor: pointer;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.upload-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #444; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.video-upload-button:hover {
+    background-color: #555; 
+}
+
+.submit-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.submit-button:hover {
+    background-color: #555;
+}
+
+.submit-button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.admin-form label {
+    text-align: left;
+}
+
+.admin-form input,
+.admin-form textarea {
+    margin-bottom: 10px;
+}
+
+
