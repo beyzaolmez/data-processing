@@ -1,31 +1,66 @@
 import React, { useState } from 'react';
 
-const AdminForm = () => {
-    const [adminName, setAdminName] = useState('');
-    const [adminEmail, setAdminEmail] = useState('');
-    const isValidEmail = email => /\S+@\S+\.\S+/.test(email);
-    const [showAdminForm, setShowAdminForm] = useState(false);
+const AddComponent = () => {
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-    const handleAdminSubmit = (event) => {
-        event.preventDefault();
-        setShowAdminForm(false);
+    const validateEmail = (email) => {
+        const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}]))$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+        setIsSubmitEnabled(validateEmail(e.target.value) && name.trim().length > 0);
+    };
+
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+        setIsSubmitEnabled(validateEmail(email) && e.target.value.trim().length > 0);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+
+            const response = await fetch('/api/saveAdmin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email }),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                throw new Error('Failed to save admin data');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
     };
 
     return (
-        <form onSubmit={handleAdminSubmit}>
-            <label>Enter Admin Name:</label>
-            <input type="text" value={adminName} onChange={(e) => setAdminName(e.target.value)} />
-            
-            <label>Enter Admin Email:</label>
-            <input type="email" value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} />
-
-            <input 
-                type="submit" 
-                value="Submit Admin Details" 
-                disabled={!adminName || !isValidEmail(adminEmail)}
-            />
-        </form>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text" 
+                    value={name} 
+                    onChange={handleNameChange} 
+                    placeholder="Name" 
+                />
+                <input 
+                    type="email" 
+                    value={email} 
+                    onChange={handleEmailChange} 
+                    placeholder="Email" 
+                />
+                <button type="submit" disabled={!isSubmitEnabled}>Submit</button>
+            </form>
+        </div>
     );
 };
 
-export default AdminForm;
+export default AddComponent;
