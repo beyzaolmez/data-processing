@@ -6,6 +6,7 @@ import SubscriptionPage from './SubscriptionPage.js';
 import AccountPage from './AccountPage.js';
 import ProfilePage from './ProfilePage.js';
 import ForgotPasswordPage from './auth/ForgotPasswordPage.js';
+import HomePage from './HomePage/HomePage.js';
 
 function App() {
   /* const [data, setData] = useState([])
@@ -43,7 +44,7 @@ function App() {
       </table>
     </div>)
     */
-   return(<LogInPage/>)
+   return(<HomePage/>)
    
 }
 
