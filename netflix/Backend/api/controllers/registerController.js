@@ -41,4 +41,8 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = {registerUser};
+const displayRegiser = async (req, res) => {
+    res.send('Register API');
+}
+
+module.exports = {registerUser, displayRegiser};
