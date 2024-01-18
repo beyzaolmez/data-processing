@@ -1,150 +1,229 @@
 .profile-selection-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: black;
-    height: 970px;
-  }
-  
-  .profiles-container {
-    display: flex;
-  }
-  
-  .profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 10px;
-    width: 100px;
-    height: 75px;
-  }
-  
-  .profile img {
-    width: 100px; 
-    height: 100px; 
-    margin-bottom: 5px;
-  }
-  
-  .profile.add-new {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #ccc;
-    cursor: pointer;
-  }
-  
-  .profile.add-new span:first-child {
-    font-size: 3rem;
-  }
-  
-  .manage-profiles {
-    margin-top: 30px;
-    cursor: pointer;
-    width: 200px;
-    height: 50px;
-    color: #ccc;
-    background-color: black;
-    border: 1px solid #ccc;
-  }
-
-  .profile-title{
-    color: white;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-  }
-
-  .plus{
-    color: white;
-  }
-  
-  .popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .popup-inner {
-    background-color: black;
-    padding: 20px;
-    width: 500px;
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #ccc;
-  }
-
-  .profile-button{
-    margin-top: 30px;
-    cursor: pointer;
-    width: 150px;
-    height: 50px;
-    color: #ccc;
-    background-color: black;
-    border: 1px solid #ccc;
-  }
-  
-.buttons{
-  display: inline-flex;
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  height: 970px;
 }
 
-.profile-name{
+.profiles-container {
+  display: flex;  
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  width: 100px;
+  height: 75px;
+}
+
+.profile img {
+  width: 100px; 
+  height: 100px; 
+  margin-bottom: 5px;
+}
+
+.profile.add-new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #ccc;
+  cursor: pointer;
+}
+
+.profile.add-new span:first-child {
+  font-size: 3rem;
+}
+
+.manage-profiles {
+  margin-top: 60px;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  color: #ccc;
+  background-color: black;
+  border: 1px solid #ccc;
+}
+
+.profile-title{
+  color: white;
+  margin-bottom: 60px;
+  font-size: 2.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.plus{
   color: white;
 }
 
-.profile-name{
-  width: 200px;
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-inner {
+  background-color: black;
+  padding: 20px;
+  width: 500px;
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+}
+
+.profile-button{
+  margin-top: 30px;
+  cursor: pointer;
+  width: 150px;
   height: 50px;
+  color: #ccc;
+  background-color: black;
+  border: 1px solid #ccc;
+}
+
+.buttons{
+display: inline-flex;
+justify-content: space-between;
+}
+
+.profile-name{
+color: white;
+}
+
+.profile-name{
+width: 200px;
+height: 50px;
 }
 
 .input-error {
-  color: red;
-  margin-top: 5px;
+color: red;
+margin-top: 5px;
 }
 
 .profile-button-submit{
-  margin-top: 30px;
-  cursor: pointer;
-  width: 150px;
-  height: 50px;
-  color: #ccc;
-  background-color: black;
-  border: 1px solid #ccc;
-  margin-right: 200px;
+margin-top: 20px;
+cursor: pointer;
+width: 150px;
+height: 50px;
+color: #ccc;
+background-color: black;
+border: 1px solid #ccc;
+margin-right: 200px;
+margin-bottom: 20px;
 }
 
 .profile-button-cancel{
-  margin-top: 30px;
-  cursor: pointer;
-  width: 150px;
-  height: 50px;
-  color: #ccc;
-  background-color: black;
-  border: 1px solid #ccc;
+margin-top: 20px;
+cursor: pointer;
+width: 150px;
+height: 50px;
+color: #ccc;
+background-color: black;
+border: 1px solid #ccc;
+margin-bottom: 20px;
 }
 
 .radio-profile-kid{
-  color: white;
-  margin-left: 7px;
-  margin-right: 20px;
+color: white;
+margin-left: 7px;
+margin-right: 20px;
 }
 
 .radio-profile-adult{
-  color: white;
-  margin-top: 30px;
+color: white;
+margin-top: 30px;
 }
 
 .input-checkbox{
-  margin-top: 30px;
+margin-top: 15px;
+}
+
+#profileName{
+height: 25px;
+width: 200px;
+}
+
+@keyframes fadeOut {
+from { opacity: 1; }
+to { opacity: 0; }
+}
+
+.input-error-fade {
+animation: fadeOut 4s forwards;
+}
+
+.picture-profile {
+width: 150px;
+height: 150px;
+color: white;
+background-color: black;
+cursor: pointer;
+margin-top: 15px;
+border: 1.2px solid #ccc;
+margin-bottom: 20px;
+}
+
+.netflix-logo {
+display: block;
+margin-top:-260px;
+width:400px;
+height: 150px;
+margin-bottom: 100px;
+}
+
+.avatar-close-button{
+margin-top: 60px;
+cursor: pointer;
+width: 150px;
+height: 50px;
+color: #ccc;
+background-color: black;
+border: 1px solid #ccc;
+margin-bottom: 20px;
+}
+
+.profile-pictures {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+padding: 10px;
+}
+
+.profile-picture {
+width: 120px; 
+height: 120px;
+object-fit: cover; 
+margin: 15px;
+cursor: pointer;
+transition: transform 0.3s ease;
+
+&:hover {
+  transform: scale(1.1);
+}
+}
+
+.selected-picture-container {
+display: flex;
+justify-content: flex-start;
+align-items: center;
+margin-bottom: 40px;
+margin-top: 40px;
+}
+
+.selected-picture {
+max-width: 150px; 
+max-height: 150px; 
 }
