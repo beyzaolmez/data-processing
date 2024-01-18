@@ -10,5 +10,29 @@ body {
     padding: 20px;
     margin: 20px;
     border: 2px solid white; 
+    margin-top: 70px;
 }
 
+.account-settings-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.homepage {
+    position: relative;
+}
+
+.series-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    border: 2px solid white;
+}
