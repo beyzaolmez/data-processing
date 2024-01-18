@@ -6,8 +6,6 @@ const indexRoute = require('./src/api/routes/index.js');
 const registerRoute = require('./src/api/routes/register.js');
 const loginRoute = require('./src/api/routes/login.js');
 
-const database = require('./src/db/db.js').db;
-
 const app = express();
 const port = 8080;
 
