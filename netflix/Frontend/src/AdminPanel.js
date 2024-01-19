@@ -57,7 +57,7 @@ const toggleAdminFormVisibility = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        await fetch('http://your-backend-url/api/save', {
+        await fetch('http://localhost:8080/admin/upload', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ videoFile, series })

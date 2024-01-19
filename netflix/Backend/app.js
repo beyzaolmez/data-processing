@@ -5,6 +5,7 @@ const cors = require('cors');
 const indexRoute = require('./api/routes/index.js');
 const registerRoute = require('./api/routes/register.js');
 const loginRoute = require('./api/routes/login.js');
+const adminRoute = require('./api/routes/admin.js');
 
 const app = express();
 const port = 8080;
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs');
 app.use('/index', indexRoute);
 app.use('/register', registerRoute);
 app.use('/login', loginRoute);
+app.use('/admin', adminRoute);
 
 app.get('/', (req, res) => {
   res.send('Working');
