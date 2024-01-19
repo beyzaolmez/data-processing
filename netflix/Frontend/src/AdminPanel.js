@@ -8,14 +8,35 @@ import AdminForm from './AdminPanel/AdminForm';
 function App() {
     const [videoFile, setVideoFile] = useState(null);
     const [series, setSeries] = useState([]);
-    const [genres, setGenres] = useState({ action: false, comedy: false, drama: false });
-    const [movieTitle, setMovieTitle] = useState('');
     const [seriesTitle, setSeriesTitle] = useState('');
     const [movieDescription, setMovieDescription] = useState('');
     const [seriesDescription, setSeriesDescription] = useState('');
     const [showAdminForm, setShowAdminForm] = useState(false);
     const [adminName, setAdminName] = useState('');
     const [adminEmail, setAdminEmail] = useState('');
+    const [movieData, setMovieData] = useState({
+    });
+    const [seriesData, setSeriesData] = useState({
+    });
+    const [movieTitle, setMovieTitle] = useState('');
+    const [moviePath, setMoviePath] = useState('');
+    const [movieGenreId, setMovieGenreId] = useState('');
+    const [seriesPath, setsSeriesPath] = useState('');
+    const [seriesGenreId, setSeriesGenreId] = useState('');
+  const genres = [
+    { id: 1, name: 'Action' },
+    { id: 2, name: 'Comedy' },
+    { id: 3, name: 'Drama' },
+  ];
+
+
+    const handleMovieChange = (event) => {
+        setMovieData({ ...movieData, [event.target.name]: event.target.value });
+    };
+
+    const handleSeriesChange = (event) => {
+        setSeriesData({ ...seriesData, [event.target.name]: event.target.value });
+    };
 
     const handleVideoUpload = (event) => {
         const file = event.target.files[0];
@@ -37,8 +58,8 @@ function App() {
     window.location.reload();
 };
 
-  const handleGenreChange = (event) => {
-    setGenres({ ...genres, [event.target.name]: event.target.checked });
+const handleGenreSelect = (genreId) => {
+  setMovieGenreId(genreId);
 };
 
   const isAnyGenreSelected = Object.values(genres).some(Boolean);
@@ -54,22 +75,50 @@ const toggleAdminFormVisibility = () => {
 };
 
 
-  const handleSubmit = async (event) => {
+const handleSubmit = async (event) => {
     event.preventDefault();
+  
     try {
-        await fetch('http://localhost:8080/admin/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ videoFile, series })
-        });
-        setVideoFile(null);
-        setSeries([]);
-        
+      const movieData = {
+        title: movieTitle,
+        genreId: movieGenreId, 
+      };
+  
+      const seriesData = {
+        title: seriesTitle, 
+        genreId: seriesGenreId,
+      };
+  
+      const movieResponse = await fetch('http://localhost:8080/admin/movie/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(movieData),
+      });
+  
+      if (!movieResponse.ok) {
+        throw new Error('Error submitting movie data');
+      }
+  
+      const seriesResponse = await fetch('http://localhost:8080/series', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(seriesData),
+      });
+  
+      if (!seriesResponse.ok) {
+        throw new Error('Error submitting series data');
+      }
+  
+      window.location.reload();
     } catch (error) {
-        console.error('Submission error:', error);
+      console.error('Error submitting data:', error);
     }
-    window.location.reload();
-};
+  };
+  
 
 const handleAdminSubmit = async () => {
   setShowAdminForm(false);
@@ -93,7 +142,7 @@ return (
                 {}
                 {!videoFile && series.length === 0 && (
                     <>
-                        <input type="file" accept="video/*" onChange={handleSeriesUpload} style={{ display: 'none' }} id="series-upload" multiple />
+                        <input type="file" accept="video/*" onChange={handleSeriesChange} style={{ display: 'none' }} id="series-upload" multiple />
                         <label htmlFor="series-upload" className="upload-button">Upload Series</label>
                     </>
                 )}
@@ -106,20 +155,25 @@ return (
                 {videoFile && (
                     <>
                         <h3>Choose genres:</h3>
-                <div>
-                    <input type="checkbox" id="action" name="action" checked={genres.action} onChange={handleGenreChange} />
-                    <label htmlFor="action">Action</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="comedy" name="comedy" checked={genres.comedy} onChange={handleGenreChange} />
-                    <label htmlFor="comedy">Comedy</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="drama" name="drama" checked={genres.drama} onChange={handleGenreChange} />
-                    <label htmlFor="drama">Drama</label>
-                </div><p></p>
+                        {genres.map((genre) => (
+        <div key={genre.id}>
+          <input
+            type="checkbox"
+            id={`genre-${genre.id}`}
+            name="genre"
+            value={genre.id}
+            onChange={() => handleGenreSelect(genre.id)}
+          />
+          <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
+        </div>
+      ))}<p></p>
                         <label>Enter title:</label><p></p>
-                        <input type="text" placeholder="Movie Title" value={movieTitle} onChange={(e) => setMovieTitle(e.target.value)} /><p></p>
+                        <input
+        type="text"
+        value={movieTitle}
+        onChange={(e) => setMovieTitle(e.target.value)}
+        placeholder="Movie Title"
+      /><p></p>
                         <label>Enter description:</label><p></p>
                         <textarea placeholder="Movie Description" value={movieDescription} onChange={(e) => setMovieDescription(e.target.value)}></textarea>
                     </>
@@ -128,18 +182,18 @@ return (
                 {series.length > 0 && (
                     <>  
                         <h3>Choose genres:</h3>
-                <div>
-                    <input type="checkbox" id="action" name="action" checked={genres.action} onChange={handleGenreChange} />
-                    <label htmlFor="action">Action</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="comedy" name="comedy" checked={genres.comedy} onChange={handleGenreChange} />
-                    <label htmlFor="comedy">Comedy</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="drama" name="drama" checked={genres.drama} onChange={handleGenreChange} />
-                    <label htmlFor="drama">Drama</label>
-                </div><p></p>
+                        {genres.map((genre) => (
+        <div key={genre.id}>
+          <input
+            type="checkbox"
+            id={`genre-${genre.id}`}
+            name="genre"
+            value={genre.id}
+            onChange={() => handleGenreSelect(genre.id)}
+          />
+          <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
+        </div>
+      ))}<p></p>
                         <label>Enter title:</label><p></p>
                         <input type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} /><p></p>
                         <label>Enter description:</label><p></p>
