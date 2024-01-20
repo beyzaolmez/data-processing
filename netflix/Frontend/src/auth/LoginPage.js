@@ -16,22 +16,44 @@ export default function LogIn() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json, application/xml',
         },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('Content-Type');
 
-      if (response.ok) {
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        handleSuccess(data);
         setIsLoggedIn(true);
-        console.log('Login successful:', data.user);
+      } else if (contentType.includes('application/xml')) {
+        const xmlString = await response.text();
+        handleXMLSuccess(xmlString);
+        setIsLoggedIn(true);
       } else {
-        setError(data.message || 'Login failed');
+        console.error('Unexpected content type:', contentType);
+        handleError('Unexpected content type');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      setError('Internal Server Error');
+      handleError('Internal Server Error');
     }
+  };
+
+  const handleSuccess = (data) => {
+    setIsLoggedIn(true);
+    console.log('Login successful:', data.user);
+  };
+
+  const handleXMLSuccess = (xmlString) => {
+    // Parse the XML string or handle it as needed
+    console.log('XML Response:', xmlString);
+    // Add your XML parsing logic here
+  };
+
+  const handleError = (errorMessage) => {
+    setError(errorMessage || 'Login failed');
   };
 
   return (
@@ -41,7 +63,6 @@ export default function LogIn() {
         {isLoggedIn ? (
           <div className="loggedInInfo">
             <p>Welcome, {email}!</p>
-            {/* Add additional information or navigation for logged-in users */}
           </div>
         ) : (
           <form className="loginForm" onSubmit={handleSubmit}>
@@ -80,4 +101,4 @@ export default function LogIn() {
     </div>
   );
 };
-export {LogIn};
+export { LogIn };

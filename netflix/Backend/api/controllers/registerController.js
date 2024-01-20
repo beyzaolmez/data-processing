@@ -14,14 +14,14 @@ const hashPassword = async (plainPassword) => {
   }
 };
 
-const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+const registerUser = async (req) => {
+  let { email, password } = req.body;
 
   email = xss(email);
   password = xss(password);
 
   if (!email.endsWith('@gmail.com')) {
-    return res.status(400).json({ message: 'Invalid email domain. Only @gmail.com is allowed.' });
+    return { error: 'Invalid email domain. Only @gmail.com is allowed.' };
   }
 
   try {
@@ -31,44 +31,22 @@ const registerUser = async (req, res) => {
 
     const insertQuery = 'INSERT INTO user (user_email, user_password, auth_token, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
       
-    db.query(insertQuery, [email, hashedPassword, verificationToken, 1, 'Card'], (queryErr, results) => {
-      if (queryErr) {
-        console.error('Error executing query:', queryErr);
-
-        // Handle the content negotiation
-        const contentType = req.headers['accept'] || 'application/json';
-
-        if (contentType.includes('xml')) {
-          const xmlResponse = `<response><error>Error executing query</error></response>`;
-          res.status(500).type('application/xml').send(xmlResponse);
+    const queryResult = await new Promise((resolve, reject) => {
+      db.query(insertQuery, [email, hashedPassword, verificationToken, 1, 'Card'], (queryErr, results) => {
+        if (queryErr) {
+          console.error('Error executing query:', queryErr);
+          reject({ error: 'Internal Server Error' });
         } else {
-          res.status(500).json({ error: 'Internal Server Error' });
+          console.log('User registered successfully');
+          resolve({ message: 'User registered successfully' });
         }
-        return;
-      }
-
-      console.log('User registered successfully');
-
-      const contentType = req.headers['accept'] || 'application/json';
-
-      if (contentType.includes('xml')) {
-        const xmlResponse = `<response><message>User registered successfully</message></response>`;
-        res.status(201).type('application/xml').send(xmlResponse);
-      } else {
-        res.status(201).json({ message: 'User registered successfully' });
-      }
+      });
     });
+
+    return queryResult;
   } catch (error) {
     console.error('Error during registration:', error);
-
-    const contentType = req.headers['accept'] || 'application/json';
-
-    if (contentType.includes('xml')) {
-      const xmlResponse = `<response><error>Error during registration</error></response>`;
-      res.status(500).type('application/xml').send(xmlResponse);
-    } else {
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+    return { error: 'Internal Server Error' };
   }
 };
 
