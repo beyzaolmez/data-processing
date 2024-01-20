@@ -25,8 +25,8 @@ function App() {
     const [seriesPath, setsSeriesPath] = useState('');
     const [seriesGenreId, setSeriesGenreId] = useState('');
   const genres = [
-    { id: 1, name: 'Action' },
-    { id: 2, name: 'Comedy' },
+    { id: 1, name: 'Comedy' },
+    { id: 2, name: 'Action' },
     { id: 3, name: 'Drama' },
   ];
 
