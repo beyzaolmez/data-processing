@@ -4,6 +4,7 @@ import ItemList from './AdminPanel/ItemList';
 import DeleteButton from './AdminPanel/DeleteButton';
 import VideoControls from './AdminPanel/VideoControls';
 import AdminForm from './AdminPanel/AdminForm';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
     const [videoFile, setVideoFile] = useState(null);
@@ -74,7 +75,15 @@ const toggleAdminFormVisibility = () => {
   setShowAdminForm(!showAdminForm);
 };
 
+const navigate = useNavigate();
 
+const AdminPanel = () => {
+  const history = useNavigate();  
+}
+
+const handleUserClick = () => {
+    navigate('/users');
+  };
 const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -210,6 +219,7 @@ return (
           />
       </form>
       <DeleteButton onClick={handleDelete} />
+      <button className="user-button" onClick={handleUserClick}>User</button>
       <div className="admin-container">
             {!showAdminForm && (
                 <button onClick={toggleAdminFormVisibility}>Create a New Admin</button>
