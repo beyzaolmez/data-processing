@@ -6,7 +6,7 @@ const ItemList = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/items')
+        axios.get('http://localhost:8080/admin/movie/getMovies')
             .then(response => setItems(response.data))
             .catch(error => console.error(error));
     }, []);

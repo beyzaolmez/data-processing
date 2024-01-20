@@ -137,7 +137,6 @@ const handleAdminSubmit = async () => {
 return (
   <div className="admin-container">
        <button className="back-button" onClick={handleBack}>Home</button>
-      <ItemList />
       <form onSubmit={handleSubmit}>
                 {}
                 {!videoFile && series.length === 0 && (

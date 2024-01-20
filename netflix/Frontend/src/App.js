@@ -7,6 +7,7 @@ import AccountPage from './AccountPage.js';
 import ProfilePage from './ProfilePage.js';
 import ForgotPasswordPage from './auth/ForgotPasswordPage.js';
 import AdminPanel from './AdminPanel.js';
+import Users from './Users'; 
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path='/forgotPassword' Component={ForgotPasswordPage}/>
         <Route exact path='/profile' Component={ProfilePage}/>
         <Route exact path='/adminPanel' Component={AdminPanel}/>
+        <Route path="/users" element={<Users />} />
       </Routes>
     </BrowserRouter>);
 }
