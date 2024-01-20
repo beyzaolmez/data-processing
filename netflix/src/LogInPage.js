@@ -87,7 +87,9 @@ const LogIn = () => {
 
             {error && <div className="authError">{error}</div>}
 
-            <a id="FormLink" href="ForgotPasswordPage.js">Forgot password?</a>
+          
+            <a id="FormLink" href="/forgot-password">Forgot password?</a>
+
             <input
               type="submit"
               value="Log-In"

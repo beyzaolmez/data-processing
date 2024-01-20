@@ -1,37 +1,77 @@
-const nodemailer = require('nodemailer');
+import React, { useState, useEffect } from 'react';
 
-// Create a nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'rares.manoli@gmail.com', // replace with your email
-    pass: 'raresmanoli2003', // replace with your email password
-  },
-});
+const ResetPassword = ({ match }) => {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [resetSuccess, setResetSuccess] = useState(false);
 
-// Function to send reset password email
-const sendResetPasswordEmail = (email, token) => {
-  const mailOptions = {
-    from: 'rares.manoli@gmail.com', // replace with your email
-    to: email,
-    subject: 'Password Reset',
-    text: `Click the following link to reset your password: http://localhost:3000/reset-password?token=${token}`,
+  const resetToken = match.params.token; // Token from the URL
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: resetToken, newPassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResetSuccess(true);
+        console.log('Password reset successful:', data.message);
+      } else {
+        setError(data.message || 'Password reset failed');
+      }
+    } catch (error) {
+      console.error('Error during password reset:', error);
+      setError('Internal Server Error');
+    }
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Email sending failed:', error);
-      // Handle error, such as logging it or sending an error response
-    } else {
-      console.log('Email sent:', info.response);
-      // Handle success, such as logging it or sending a success response
-    }
-  });
+  return (
+    <div>
+      {resetSuccess ? (
+        <p>Password reset successful! You can now log in with your new password.</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="newPassword">New Password:</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            placeholder="Enter new password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+
+          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          {error && <div className="authError">{error}</div>}
+
+          <button type="submit">Reset Password</button>
+        </form>
+      )}
+    </div>
+  );
 };
 
-// Example usage:
-const userEmail = 'megasmith1053@gmal.com';
-const resetToken = 'temporary_token'; // This would typically be generated dynamically
-
-sendResetPasswordEmail(userEmail, resetToken);
-
+export default ResetPassword;
