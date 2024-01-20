@@ -1,15 +1,22 @@
 // WatchListPage.js
 import React, { useEffect, useState } from 'react';
 import MovieComponent from './MovieComponent';
+import MovieTable from './MovieTable';
 
 const WatchListPage = ({ userId }) => {
   const [watchList, setWatchList] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
 
   useEffect(() => {
     // Fetch user's watch-list data from the backend API
     fetchWatchListData(userId)
       .then((data) => setWatchList(data))
       .catch((error) => console.error('Error fetching watch list:', error));
+
+    // Fetch all movies data from the backend API
+    fetchAllMoviesData()
+      .then((data) => setAllMovies(data))
+      .catch((error) => console.error('Error fetching all movies:', error));
   }, [userId]);
 
   const removeFromWatchList = (movieId) => {
@@ -24,44 +31,40 @@ const WatchListPage = ({ userId }) => {
       .catch((error) => console.error('Error removing movie from watch list:', error));
   };
 
-  const fetchWatchListData = async (userId) => {
-    // Example: Fetch watch list data from the backend API
-    const response = await fetch(`/api/watchlist/${userId}`);
+  const removeFromAllMovies = (movieId) => {
+    // Make a request to the backend API to remove the selected movie from all movies
+    removeMovieFromAllMovies(movieId)
+      .then(() => {
+        // After successfully removing, fetch the updated all movies data and update state
+        fetchAllMoviesData()
+          .then((data) => setAllMovies(data))
+          .catch((error) => console.error('Error fetching updated all movies:', error));
+      })
+      .catch((error) => console.error('Error removing movie from all movies:', error));
+  };
+
+  const fetchAllMoviesData = async () => {
+    // Example: Fetch all movies data from the backend API
+    const response = await fetch('/api/allmovies');
     const data = await response.json();
     return data;
   };
 
-  const removeMovieFromWatchList = async (userId, movieId) => {
-    // Example: Remove movie from watch list in the backend API
-    const response = await fetch(`/api/watchlist/${userId}/remove/${movieId}`, {
+  const removeMovieFromAllMovies = async (movieId) => {
+    // Example: Remove movie from all movies in the backend API
+    const response = await fetch(`/api/allmovies/remove/${movieId}`, {
       method: 'DELETE',
     });
 
     if (!response.ok) {
-      throw new Error('Failed to remove movie from watch list');
+      throw new Error('Failed to remove movie from all movies');
     }
   };
 
   return (
     <div>
-      <h2>My Watch List</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Movie Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {watchList.map((movie) => (
-            <MovieComponent
-              key={movie.id}
-              movie={movie}
-              removeFromWatchList={removeFromWatchList}
-            />
-          ))}
-        </tbody>
-      </table>
+      <WatchListTable watchList={watchList} removeFromWatchList={removeFromWatchList} />
+      <MovieTable movies={allMovies} removeFromTable={removeFromAllMovies} />
     </div>
   );
 };
