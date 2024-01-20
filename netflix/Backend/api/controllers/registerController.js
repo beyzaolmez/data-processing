@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db/db.js').db;
+const tokenService = require('../services/tokenService.js');
+const xss = require('xss');
 
 const hashPassword = async (plainPassword) => {
   try {
@@ -8,41 +10,66 @@ const hashPassword = async (plainPassword) => {
     return hashedPassword;
   } catch (error) {
     console.error('Error hashing password:', error);
-    throw error; // Rethrow the error to be caught in the calling function
+    throw error;
   }
 };
 
-// Controller function to register a new user
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
 
+  email = xss(email);
+  password = xss(password);
+
+  if (!email.endsWith('@gmail.com')) {
+    return res.status(400).json({ message: 'Invalid email domain. Only @gmail.com is allowed.' });
+  }
+
   try {
-    // Hash the password before storing it in the database
     const hashedPassword = await hashPassword(password);
 
-    // Insert query
-    const insertQuery = 'INSERT INTO user (user_email, user_password, is_activated, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
-    db.query(
-      insertQuery,
-      [email, hashedPassword, null, 1, "Card"],
-      (queryErr, results) => {
-        if (queryErr) {
-          console.error('Error executing query:', queryErr);
-          return res.status(500).json({ error: 'Internal Server Error' });
-        }
+    const verificationToken = tokenService.generateToken();
 
-        console.log('User registered successfully');
-        return res.status(201).json({ message: 'User registered successfully' });
+    const insertQuery = 'INSERT INTO user (user_email, user_password, auth_token, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
+      
+    db.query(insertQuery, [email, hashedPassword, verificationToken, 1, 'Card'], (queryErr, results) => {
+      if (queryErr) {
+        console.error('Error executing query:', queryErr);
+
+        // Handle the content negotiation
+        const contentType = req.headers['accept'] || 'application/json';
+
+        if (contentType.includes('xml')) {
+          const xmlResponse = `<response><error>Error executing query</error></response>`;
+          res.status(500).type('application/xml').send(xmlResponse);
+        } else {
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return;
       }
-    );
+
+      console.log('User registered successfully');
+
+      const contentType = req.headers['accept'] || 'application/json';
+
+      if (contentType.includes('xml')) {
+        const xmlResponse = `<response><message>User registered successfully</message></response>`;
+        res.status(201).type('application/xml').send(xmlResponse);
+      } else {
+        res.status(201).json({ message: 'User registered successfully' });
+      }
+    });
   } catch (error) {
     console.error('Error during registration:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+
+    const contentType = req.headers['accept'] || 'application/json';
+
+    if (contentType.includes('xml')) {
+      const xmlResponse = `<response><error>Error during registration</error></response>`;
+      res.status(500).type('application/xml').send(xmlResponse);
+    } else {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 };
 
-const displayRegiser = async (req, res) => {
-    res.send('Register API');
-}
-
-module.exports = {registerUser, displayRegiser};
+module.exports = { registerUser };

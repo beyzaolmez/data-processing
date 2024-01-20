@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import logo from '../Images/Netflix.png';
-import '../css/RegisterPage.css'; // CSS file for styling
+import '../css/RegisterPage.css';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -26,18 +26,35 @@ export default function RegisterPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json, application/xml',
         },
         body: JSON.stringify({ email, password }),
       });
-      const data = await response.json();
 
       if (response.ok) {
-        console.log('Register successful:', email);
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType.includes('application/json')) {
+          const data = await response.json();
+          console.log('Register successful:', data.message);
+        } else if (contentType.includes('application/xml')) {
+          const data = await response.text();
+          console.log('Register successful:', data);
+        } else {
+          console.error('Unexpected content type:', contentType);
+        }
       } else {
-        console.error(data.message || 'Register failed');
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          console.error(data.message || 'Register failed');
+        } else {
+          const data = await response.text();
+          console.error('Unexpected content type:', contentType, data);
+        }
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error during registration:', error);
     }
   };
 
