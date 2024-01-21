@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import MovieComponent from './MovieComponent';
 import MovieTable from './MovieTable';
-import './css/AccountPage.css';
+import './css/watchList.css';
 
 const WatchListPage = ({ userId }) => {
   const [watchList, setWatchList] = useState([]);
