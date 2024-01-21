@@ -13,7 +13,6 @@ function App() {
     const [movieDescription, setMovieDescription] = useState('');
     const [seriesDescription, setSeriesDescription] = useState('');
     const [showAdminForm, setShowAdminForm] = useState(false);
-    const [adminName, setAdminName] = useState('');
     const [adminEmail, setAdminEmail] = useState('');
     const [movieData, setMovieData] = useState({
     });

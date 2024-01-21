@@ -16,7 +16,6 @@ app.use(cors());
 
 app.set('view engine', 'ejs');
 
-// Uses routes for the endpoints
 app.use('/index', indexRoute);
 app.use('/register', registerRoute);
 app.use('/login', loginRoute);
@@ -27,7 +26,6 @@ app.get('/', (req, res) => {
   res.send('Working');
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

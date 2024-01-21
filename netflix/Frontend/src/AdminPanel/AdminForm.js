@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const AddComponent = () => {
     const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
     const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
     const validateEmail = (email) => {
@@ -12,12 +11,7 @@ const AddComponent = () => {
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
-        setIsSubmitEnabled(validateEmail(e.target.value) && name.trim().length > 0);
-    };
-
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-        setIsSubmitEnabled(validateEmail(email) && e.target.value.trim().length > 0);
+        setIsSubmitEnabled(validateEmail(e.target.value));
     };
 
     const handleSubmit = async (e) => {
@@ -29,7 +23,7 @@ const AddComponent = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email }),
+                body: JSON.stringify({ email }),
             });
 
             if (response.ok) {
@@ -45,12 +39,6 @@ const AddComponent = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    value={name} 
-                    onChange={handleNameChange} 
-                    placeholder="Name" 
-                />
                 <input 
                     type="email" 
                     value={email} 

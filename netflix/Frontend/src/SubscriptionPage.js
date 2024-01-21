@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './css/SubscriptionPage.css'; // CSS file for styling
-import LogoImage from './Images/Netflix.png'; // Import your logo image
+import './css/SubscriptionPage.css';
+import LogoImage from './Images/Netflix.png'; 
 
 const SubscriptionPage = () => {
 
@@ -29,11 +29,8 @@ const [selectedOption, setSelectedOption] = useState(null);
       throw new Error('Failed to add subscription');
     }
 
-    // Subscription added successfully
-    // Handle success scenario here (e.g., show a success message)
   } catch (error) {
     console.error('Error:', error.message);
-    // Handle error scenario here (e.g., show an error message)
   }
 };
 
