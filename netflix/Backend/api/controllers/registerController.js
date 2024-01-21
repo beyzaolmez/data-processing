@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db/db.js').db;
+const tokenService = require('../services/tokenService.js');
+const xss = require('xss');
 
 const hashPassword = async (plainPassword) => {
   try {
@@ -8,41 +10,44 @@ const hashPassword = async (plainPassword) => {
     return hashedPassword;
   } catch (error) {
     console.error('Error hashing password:', error);
-    throw error; // Rethrow the error to be caught in the calling function
+    throw error;
   }
 };
 
-// Controller function to register a new user
-const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+const registerUser = async (req) => {
+  let { email, password } = req.body;
+
+  email = xss(email);
+  password = xss(password);
+
+  if (!email.endsWith('@gmail.com')) {
+    return { error: 'Invalid email domain. Only @gmail.com is allowed.' };
+  }
 
   try {
-    // Hash the password before storing it in the database
     const hashedPassword = await hashPassword(password);
 
-    // Insert query
-    const insertQuery = 'INSERT INTO user (user_email, user_password, is_activated, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
-    db.query(
-      insertQuery,
-      [email, hashedPassword, null, 1, "Card"],
-      (queryErr, results) => {
+    const verificationToken = tokenService.generateToken();
+
+    const insertQuery = 'INSERT INTO user (user_email, user_password, auth_token, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
+      
+    const queryResult = await new Promise((resolve, reject) => {
+      db.query(insertQuery, [email, hashedPassword, verificationToken, 1, 'Card'], (queryErr, results) => {
         if (queryErr) {
           console.error('Error executing query:', queryErr);
-          return res.status(500).json({ error: 'Internal Server Error' });
+          reject({ error: 'Internal Server Error' });
+        } else {
+          console.log('User registered successfully');
+          resolve({ message: 'User registered successfully' });
         }
+      });
+    });
 
-        console.log('User registered successfully');
-        return res.status(201).json({ message: 'User registered successfully' });
-      }
-    );
+    return queryResult;
   } catch (error) {
     console.error('Error during registration:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return { error: 'Internal Server Error' };
   }
 };
 
-const displayRegiser = async (req, res) => {
-    res.send('Register API');
-}
-
-module.exports = {registerUser, displayRegiser};
+module.exports = { registerUser };
