@@ -2,11 +2,19 @@ import React, { useState } from 'react';
 import LogoImage from '../Images/Netflix.png';
 import '../css/LogInPage.css';
 
+const MAX_LOGIN_ATTEMPTS = 3;
+
 export default function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+
+  const storedLoginAttempts = localStorage.getItem('loginAttempts');
+  if (storedLoginAttempts) {
+    setLoginAttempts(parseInt(storedLoginAttempts, 10));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,18 +31,26 @@ export default function LogIn() {
 
       const contentType = response.headers.get('Content-Type');
 
-      if (contentType.includes('application/json')) {
+      if(response.ok) {
+        if (contentType.includes('application/json')) {
         const data = await response.json();
         handleSuccess(data);
-        setIsLoggedIn(true);
-      } else if (contentType.includes('application/xml')) {
-        const xmlString = await response.text();
-        handleXMLSuccess(xmlString);
-        setIsLoggedIn(true);
+        } else if (contentType.includes('application/xml')) {
+          const xmlString = await response.text();
+          handleXMLSuccess(xmlString);
+        } else {
+          console.error('Unexpected content type:', contentType);
+          handleError('Unexpected content type');
+        }
       } else {
-        console.error('Unexpected content type:', contentType);
-        handleError('Unexpected content type');
+        setError('Login failed');
+        setLoginAttempts(loginAttempts + 1);
+
+        if (loginAttempts + 1 === MAX_LOGIN_ATTEMPTS) {
+          setError('Account blocked!');
+        }
       }
+      
     } catch (error) {
       console.error('Error during login:', error);
       handleError('Internal Server Error');
@@ -47,9 +63,8 @@ export default function LogIn() {
   };
 
   const handleXMLSuccess = (xmlString) => {
-    // Parse the XML string or handle it as needed
     console.log('XML Response:', xmlString);
-    // Add your XML parsing logic here
+    setIsLoggedIn(true);
   };
 
   const handleError = (errorMessage) => {
