@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LogoImage from '../Images/Netflix.png';
 import '../css/LogInPage.css';
+import config from '../config';
 
 const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -20,7 +21,7 @@ export default function LogIn() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch(config.apiUrl+'/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

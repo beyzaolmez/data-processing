@@ -7,6 +7,7 @@ import ProfileGiraffe from './Images/Profile-giraffe.png';
 import ProfileMonster from './Images/Profile-monster.png';
 import ProfilePenguin from './Images/Profile-pinguin.png';
 import ProfileTurtle from './Images/Profile-turtle.png';
+import config from './config';
 
 const ProfileSelectionScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -124,7 +125,7 @@ const ProfileSelectionScreen = () => {
     handleClosePopup();
   
     try {
-      const response = await fetch('/api/addProfile', {
+      const response = await fetch(config.apiUrl+'/profile/addProfile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

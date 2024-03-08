@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from './config';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/users/getUsers');
+        const response = await axios.get(config.apiUrl+'/users/getUsers');
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
