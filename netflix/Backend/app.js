@@ -9,7 +9,7 @@ const adminRoute = require('./api/routes/admin.js');
 const usersRoute = require('./api/routes/users.js');
 
 const app = express();
-const port = 8080;
+const port = process.env.EXPRESS_PORT;
 
 app.use(express.json());
 app.use(cors());

@@ -1,8 +1,15 @@
-// tokenService.js
-const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const generateToken = () => {
-  return uuidv4();
-};
+class tokenService {
+  constructor() {
+    this.secretKey = process.env.SECRET_KEY;
+  }
 
-module.exports = { generateToken };
+  generateToken(email,password , expiresIn) {
+    const userData = {email, password}
+    return jwt.sign({user: userData}, this.secretKey, {expiresIn});
+  }
+}
+
+module.exports = tokenService;

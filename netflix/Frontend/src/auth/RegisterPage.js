@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../Images/Netflix.png';
 import '../css/RegisterPage.css';
+import config from '../config';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/register', {
+      const response = await fetch(config.apiUrl+'/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

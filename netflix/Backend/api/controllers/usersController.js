@@ -12,6 +12,4 @@ const getUsers = async (req, res) => {
     });
 };
 
-module.exports = {
-    getUsers
-};
+module.exports = {getUsers};

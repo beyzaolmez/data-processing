@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/AccountPage.css';
 import account from './Images/account2.svg';
+import config from './config';
 
 export default function AccountPage() {
   return (

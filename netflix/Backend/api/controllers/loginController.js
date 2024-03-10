@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const database = require('../../db/db.js').db;
+const db = require('../../db/db.js').db;
 const xss = require('xss');
 
 const loginUser = async (email, password) => {
@@ -8,29 +8,30 @@ const loginUser = async (email, password) => {
 
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM user WHERE user_email = ?';
-    database.query(query, [email], async (err, results) => {
+    db.query(query, [email], async (err, results) => {
       if (err) {
         console.error('MySQL query error:', err);
-        reject({ success: false, message: 'Internal Server Error' });
+        reject({ errorCode: 500, message: 'Internal Server Error' });
+        return;
       }
 
-      if (results.length > 0) {
-        const user = results[0];
+      if (results.length === 0) {
+        reject({ errorCode: 404, message: "Email doesn't exist" });
+        return;
+      }
 
-        try {
-          const passwordMatch = await bcrypt.compare(password, user.user_password);
+      const user = results[0];
 
-          if (passwordMatch) {
-            resolve({ success: true, email});
-          } else {
-            reject({ success: false, message: 'Invalid credentials' });
-          }
-        } catch (compareError) {
-          console.error('Error comparing passwords:', compareError);
-          reject({ success: false, message: 'Internal Server Error' });
+      try {
+        const passwordMatch = await bcrypt.compare(password, user.user_password);
+        if (passwordMatch) {
+          resolve({ statusCode: 200, success: true, email });
+        } else {
+          reject({ errorCode: 401, message: 'Invalid credentials' });
         }
-      } else {
-        reject({ success: false, message: "Email doesn't exist" });
+      } catch (compareError) {
+        console.error('Error comparing passwords:', compareError);
+        reject({ errorCode: 500, message: 'Internal Server Error' });
       }
     });
   });

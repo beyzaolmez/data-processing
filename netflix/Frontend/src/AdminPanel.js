@@ -5,6 +5,7 @@ import DeleteButton from './AdminPanel/DeleteButton';
 import VideoControls from './AdminPanel/VideoControls';
 import AdminForm from './AdminPanel/AdminForm';
 import { useNavigate } from 'react-router-dom';
+import config from './config';
 
 function App() {
     const [videoFile, setVideoFile] = useState(null);
@@ -97,7 +98,7 @@ const handleSubmit = async (event) => {
         genreId: seriesGenreId,
       };
   
-      const movieResponse = await fetch('http://localhost:8080/admin/movie/upload', {
+      const movieResponse = await fetch(config.apiUrl+'/admin/movie/upload', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ const handleSubmit = async (event) => {
         throw new Error('Error submitting movie data');
       }
   
-      const seriesResponse = await fetch('http://localhost:8080/series', {
+      const seriesResponse = await fetch(config.apiUrl+'/series', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

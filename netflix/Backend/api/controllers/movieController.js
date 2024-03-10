@@ -8,20 +8,20 @@ const uploadMovie = async (req, res) => {
     db.query(sql, [title, genreId], (err, results) => {
         if (err) {
             console.error('MySQL query error:', err);
-            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            reject({ errorCode: 500, message: 'Internal Server Error' });
           } else {
             console.log("Added movie successfully");
-            return res.status(201).json({message: "Added movie successfully"});
+            resolve({ statusCode: 200, success:true, message: 'Added movie successfully' });
           }
     });
 }
 
 const getMovies = async (req, res) => {
-    const sql = "SELECT movie.title, genre.name FROM movie JOIN genre ON movie.genre_id = genre.genre_id";
+    const sql = "SELECT * FROM moviegenredetails";
     db.query(sql, (err, results) => {
         if (err) {
             console.error('MySQL query error:', err);
-            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            reject({ errorCode: 500, message: 'Internal Server Error' });
         } else {
             return res.json(results);
         }

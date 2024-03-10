@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db/db.js').db;
-const tokenService = require('../services/tokenService.js');
+const TokenService = require('../services/tokenService.js');
 const xss = require('xss');
 
 const hashPassword = async (plainPassword) => {
@@ -15,6 +15,9 @@ const hashPassword = async (plainPassword) => {
 };
 
 const registerUser = async (req) => {
+
+  const tokenService = new TokenService();
+
   let { email, password } = req.body;
 
   email = xss(email);
@@ -27,18 +30,20 @@ const registerUser = async (req) => {
   try {
     const hashedPassword = await hashPassword(password);
 
-    const verificationToken = tokenService.generateToken();
+    const expiresIn = 3600;
+
+    const token = tokenService.generateToken(email, password, expiresIn);
 
     const insertQuery = 'INSERT INTO user (user_email, user_password, auth_token, subscription_id, payment_method) VALUES (?, ?, ?, ?, ?)';
       
     const queryResult = await new Promise((resolve, reject) => {
-      db.query(insertQuery, [email, hashedPassword, verificationToken, 1, 'Card'], (queryErr, results) => {
+      db.query(insertQuery, [email, hashedPassword, token, 1, 'Card'], (queryErr, results) => {
         if (queryErr) {
           console.error('Error executing query:', queryErr);
-          reject({ error: 'Internal Server Error' });
+          reject({ errorCode: 500, message: 'Internal Server Error' });
         } else {
           console.log('User registered successfully');
-          resolve({ message: 'User registered successfully' });
+          resolve({ statusCode: 200, success:true, message: 'User registered successfully' });
         }
       });
     });
