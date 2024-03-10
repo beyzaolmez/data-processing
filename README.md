@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# data-processing
-=======
 # data-processing
 
 1. Install Node.js: https://nodejs.org/en
@@ -11,4 +8,3 @@
 6. Run "npm start".
 7. Open a new terminal and navigate to netflix/Frontend.
 8. Repeat step 5 and 6.
->>>>>>> Stashed changes

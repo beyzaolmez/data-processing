@@ -11,7 +11,7 @@ const loginUser = async (email, password) => {
     database.query(query, [email], async (err, results) => {
       if (err) {
         console.error('MySQL query error:', err);
-        reject({ success: false, message: 'Internal Server Error' });
+        reject({ errorCode: 500, message: 'Internal Server Error' });
       }
 
       if (results.length > 0) {
@@ -21,16 +21,16 @@ const loginUser = async (email, password) => {
           const passwordMatch = await bcrypt.compare(password, user.user_password);
 
           if (passwordMatch) {
-            resolve({ success: true, email});
+            resolve({ statusCode: 200, success: true, email});
           } else {
-            reject({ success: false, message: 'Invalid credentials' });
+            reject({ errorCode: 401, message: 'Invalid credentials' });
           }
         } catch (compareError) {
           console.error('Error comparing passwords:', compareError);
-          reject({ success: false, message: 'Internal Server Error' });
+          reject({ errorCode: 500, message: 'Internal Server Error' });
         }
       } else {
-        reject({ success: false, message: "Email doesn't exist" });
+        reject({ errorCode: 404, message: "Email doesn't exist" });
       }
     });
   });
