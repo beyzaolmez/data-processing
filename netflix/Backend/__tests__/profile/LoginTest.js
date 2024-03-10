@@ -2,6 +2,7 @@
 const axios = require('axios');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
+const { parseString } = require('xml2js');
 require('dotenv').config();
 
 const pool = mysql.createPool({
@@ -11,7 +12,7 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-const loginURL = 'http://localhost:8080/login';
+const loginURL = 'http://localhost:8080/login/login';
 
 const userDetails = {
   email: "testing@gmail.com",
@@ -31,12 +32,25 @@ describe('POST /login', () => {
 
   it('User not found should return 404', async () => {
     try {
-      await axios.post(loginURL, userDetails);
-    } catch (error) {
-      expect(error.response.status).toBe(404);
-      expect(error.response.data).toEqual({
+      const response = await axios.post(loginURL, userDetails, {
+        headers: { 'Accept': 'application/xml' }
+      });
+  
+      let parsedResponse;
+      parseString(response.data, (err, result) => {
+        if (err) {
+          throw err;
+        }
+        parsedResponse = result;
+      });
+  
+      expect(response.status).toBe(404);
+      expect(parsedResponse).toEqual({
         "message": "Email doesn't exist"
       });
+  
+    } catch (error) {
+      expect(error.response.status).toBe(404);
     }
   });
 
